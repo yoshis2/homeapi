@@ -1,0 +1,34 @@
+#  設定フィアルFirebaseやTwitter情報含む
+infrastructure/config/develop.env
+infrastructure/config/production.env
+infrastructure/config/service-account-key.json
+
+# ログ出力
+required/db-data
+required/tmp/
+required/logs/
+
+# swagger情報
+docs/docs.go
+docs/swagger
+docs/swagger.json
+docs/swagger.yaml
+
+# 外部インストール情報
+go.sum
+
+# SSL証明書情報
+.well-known
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out

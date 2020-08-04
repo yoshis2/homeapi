@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.13
+    working_directory: /go/src/github.com/yoshis2/homeapi
+    steps:
+      - checkout
+      - run: go get -u golang.org/x/tools/cmd/goimports
+      - run: go get -u golang.org/x/lint/golint
+      - run: go get -u github.com/kisielk/errcheck
+      - run: go get -u github.com/labstack/echo/v4
+      - run: go get -u github.com/swaggo/swag/cmd/swag
+      - run: swag init 
+      - run: go vet
+      - run: golint

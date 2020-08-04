@@ -1,0 +1,28 @@
+version: '3'
+services:
+  homeapi:
+    image: homeapi-raspberrypi
+    container_name: homeapi
+    build:
+      context: ./../../
+      dockerfile: required/docker/Dockerfile
+    volumes:
+    - '../../:/go/src/github.com/yoshis2/homeapi'
+    - '../../.well-known:/go/src/github.com/yoshis2/homeapi/.well-known'
+    environment:
+      GO_ENV: production
+    ports:
+    - '1323:1323'
+    restart: always
+    tty: true
+    networks:
+      homeapi_net:
+        ipv4_address: 172.16.238.10
+networks:
+  homeapi_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.16.238.0/24
