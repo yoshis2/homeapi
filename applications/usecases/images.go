@@ -16,12 +16,12 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/yoshis2/homeapi/applications"
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/ports"
-	"github.com/yoshis2/homeapi/applications/repository"
-	"github.com/yoshis2/homeapi/applications/util"
-	"github.com/yoshis2/homeapi/domain"
+	"homeapi/applications"
+	"homeapi/applications/logging"
+	"homeapi/applications/ports"
+	"homeapi/applications/repository"
+	"homeapi/applications/util"
+	"homeapi/domain"
 )
 
 type ImagesUsecase struct {

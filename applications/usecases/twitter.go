@@ -7,15 +7,16 @@ import (
 	"strconv"
 	"time"
 
+	"homeapi/applications"
+	"homeapi/applications/logging"
+	"homeapi/applications/ports"
+	"homeapi/applications/repository"
+	"homeapi/applications/util"
+	"homeapi/domain"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/yoshis2/homeapi/applications"
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/ports"
-	"github.com/yoshis2/homeapi/applications/repository"
-	"github.com/yoshis2/homeapi/applications/util"
-	"github.com/yoshis2/homeapi/domain"
 )
 
 type TwitterUsecase struct {

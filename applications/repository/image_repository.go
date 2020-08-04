@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/yoshis2/homeapi/domain"
+	"homeapi/domain"
+
 	"github.com/jinzhu/gorm"
 )
 

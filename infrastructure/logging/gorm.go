@@ -1,6 +1,6 @@
 package logging
 
-import "github.com/yoshis2/homeapi/applications/logging"
+import "homeapi/applications/logging"
 
 // GormLogger Gormのloggerをラップする
 type GormLogger struct {

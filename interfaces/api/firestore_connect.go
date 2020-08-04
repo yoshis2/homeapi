@@ -3,13 +3,13 @@ package api
 import (
 	"net/http"
 
-	"github.com/yoshis2/homeapi/infrastructure/firebases"
-	"github.com/yoshis2/homeapi/interfaces"
-	"github.com/yoshis2/homeapi/interfaces/repository"
+	"homeapi/infrastructure/firebases"
+	"homeapi/interfaces"
+	"homeapi/interfaces/repository"
 
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/ports"
-	"github.com/yoshis2/homeapi/applications/usecases"
+	"homeapi/applications/logging"
+	"homeapi/applications/ports"
+	"homeapi/applications/usecases"
 
 	"github.com/labstack/echo/v4"
 )

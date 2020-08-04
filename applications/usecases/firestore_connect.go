@@ -3,15 +3,15 @@ package usecases
 import (
 	"net/http"
 
-	"github.com/yoshis2/homeapi/domain"
+	"homeapi/domain"
 
-	"github.com/yoshis2/homeapi/infrastructure/firebases"
+	"homeapi/infrastructure/firebases"
 
-	"github.com/yoshis2/homeapi/applications"
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/ports"
-	"github.com/yoshis2/homeapi/applications/repository"
-	"github.com/yoshis2/homeapi/applications/util"
+	"homeapi/applications"
+	"homeapi/applications/logging"
+	"homeapi/applications/ports"
+	"homeapi/applications/repository"
+	"homeapi/applications/util"
 )
 
 type FirestoreConnectUsecase struct {

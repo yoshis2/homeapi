@@ -5,13 +5,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/yoshis2/homeapi/infrastructure/ex_api"
+	"homeapi/infrastructure/ex_api"
+
+	"homeapi/docs"
+	"homeapi/infrastructure/databases"
+	"homeapi/infrastructure/logging"
+	"homeapi/infrastructure/server"
 
 	"github.com/joho/godotenv"
-	"github.com/yoshis2/homeapi/docs"
-	"github.com/yoshis2/homeapi/infrastructure/databases"
-	"github.com/yoshis2/homeapi/infrastructure/logging"
-	"github.com/yoshis2/homeapi/infrastructure/server"
 )
 
 // @contact.name スリーネクスト　サポート

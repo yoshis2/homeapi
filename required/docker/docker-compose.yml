@@ -7,8 +7,8 @@ services:
       context: ./../../
       dockerfile: required/docker/Dockerfile
     volumes:
-    - '../../:/go/src/github.com/yoshis2/homeapi'
-    - '../../.well-known:/go/src/github.com/yoshis2/homeapi/.well-known'
+    - '../../:/go/src/homeapi'
+    - '../../.well-known:/go/src/homeapi/.well-known'
     environment:
       GO_ENV: production
     ports:

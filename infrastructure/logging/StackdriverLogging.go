@@ -4,7 +4,8 @@ import (
 	"context"
 	"os"
 
-	ulog "github.com/yoshis2/homeapi/applications/logging"
+	ulog "homeapi/applications/logging"
+
 	"cloud.google.com/go/logging"
 	"google.golang.org/api/option"
 )

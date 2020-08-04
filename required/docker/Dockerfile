@@ -2,7 +2,7 @@ FROM golang:alpine
 ENV GOBIN /go/bin
 
 # フォルダ構成をGoPathの通りに設置
-WORKDIR /go/src/github.com/yoshis2/homeapi
+WORKDIR /go/src/homeapi
 
 RUN apk update && apk upgrade
 RUN apk add --virtual --no-cache bash gcc musl-dev git

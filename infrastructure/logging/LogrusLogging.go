@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"homeapi/applications/logging"
+
 	"github.com/sirupsen/logrus"
-	"github.com/yoshis2/homeapi/applications/logging"
 )
 
 //LogrusLogging STDOUT,STDERRにStackdriverLogging形式のログを出力し、StackdriverLoggingに自動的に取り込んでもらう場合のlogger

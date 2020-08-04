@@ -3,7 +3,7 @@ package interfaces
 import (
 	"net/http"
 
-	"github.com/yoshis2/homeapi/applications"
+	"homeapi/applications"
 )
 
 //ErrorResponseObject error時に返却するオブジェクト

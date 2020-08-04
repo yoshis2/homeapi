@@ -1,8 +1,9 @@
 package repository
 
 import (
+	"homeapi/domain"
+
 	"github.com/jinzhu/gorm"
-	"github.com/yoshis2/homeapi/domain"
 )
 
 // TwitterRepository Twitter Repository

@@ -11,8 +11,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/interfaces/api"
+	"homeapi/applications/logging"
+	"homeapi/interfaces/api"
 )
 
 func Run(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging) {

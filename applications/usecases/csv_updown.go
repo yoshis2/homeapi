@@ -8,10 +8,10 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"github.com/yoshis2/homeapi/applications"
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/repository"
-	"github.com/yoshis2/homeapi/domain"
+	"homeapi/applications"
+	"homeapi/applications/logging"
+	"homeapi/applications/repository"
+	"homeapi/domain"
 )
 
 type CsvUpdownUsecase struct {

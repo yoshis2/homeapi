@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
-    working_directory: /go/src/github.com/yoshis2/homeapi
+    working_directory: /go/src/homeapi
     steps:
       - checkout
       - run: go get -u golang.org/x/tools/cmd/goimports

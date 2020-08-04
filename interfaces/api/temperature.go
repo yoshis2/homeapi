@@ -6,11 +6,11 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 
-	"github.com/yoshis2/homeapi/applications/logging"
-	"github.com/yoshis2/homeapi/applications/ports"
-	"github.com/yoshis2/homeapi/applications/usecases"
-	"github.com/yoshis2/homeapi/interfaces"
-	"github.com/yoshis2/homeapi/interfaces/repository"
+	"homeapi/applications/logging"
+	"homeapi/applications/ports"
+	"homeapi/applications/usecases"
+	"homeapi/interfaces"
+	"homeapi/interfaces/repository"
 )
 
 // TemperatureController 気温制御 Controller

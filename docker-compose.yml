@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: required/docker/Dockerfile
     volumes:
-    - '.:/go/src/github.com/yoshis2/homeapi'
+    - '.:/go/src/homeapi'
     environment:
       GO_ENV: develop
     ports:
