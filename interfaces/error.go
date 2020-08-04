@@ -1,9 +1,9 @@
 package interfaces
 
 import (
+	"log"
 	"net/http"
-
-	"homeapi/applications"
+	"strings"
 )
 
 //ErrorResponseObject error時に返却するオブジェクト
@@ -11,24 +11,35 @@ type ErrorResponseObject struct {
 	Message string `json:"message"`
 }
 
-//GetErrorResponse ErrorCodeとErrorResponseObjectを返却する
-func GetErrorResponse(err *applications.UsecaseError) (int, ErrorResponseObject) {
-	return getErrorHTTPStatus(err.Code), ErrorResponseObject{
-		Message: err.Msg,
+// ErrorResponse はエラーレスポンス
+func ErrorResponse(err error) (int, ErrorResponseObject) {
+	var code int
+	if err != nil {
+		if isBadRequestError(err.Error()) {
+			code = http.StatusBadRequest
+		} else if isDuplicatedUError(err.Error()) {
+			code = http.StatusConflict
+		} else {
+			code = http.StatusInternalServerError
+		}
+	}
+	return code, ErrorResponseObject{
+		Message: err.Error(),
 	}
 }
 
-func getErrorHTTPStatus(errCode int) int {
-	switch errCode {
-	case applications.BadRequest:
-		return http.StatusBadRequest
-	case applications.Unauthorized:
-		return http.StatusUnauthorized
-	case applications.NotFound:
-		return http.StatusNotFound
-	case applications.Conflict:
-		return http.StatusConflict
-	default:
-		return http.StatusInternalServerError
+func isDuplicatedUError(msg string) bool {
+	return strings.Contains(msg, "Duplicate")
+}
+
+func isBadRequestError(msg string) bool {
+	var messageBool bool
+
+	log.Printf("message : %v", msg)
+	if strings.Contains(msg, "a foreign key constraint fails") {
+		messageBool = true
+	} else if strings.Contains(msg, "BadRequest") {
+		messageBool = true
 	}
+	return messageBool
 }

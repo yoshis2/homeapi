@@ -3,7 +3,6 @@ module homeapi
 go 1.14
 
 require (
-	cloud.google.com/go v0.56.0
 	cloud.google.com/go/firestore v1.2.0
 	cloud.google.com/go/logging v1.0.0
 	firebase.google.com/go v3.13.0+incompatible
@@ -23,7 +22,6 @@ require (
 	github.com/stretchr/testify v1.5.1
 	github.com/swaggo/echo-swagger v1.0.0
 	github.com/swaggo/swag v1.6.6
-	github.com/yoshis2/homeapi v0.0.0-20200804123214-535f382ec248
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
 	google.golang.org/api v0.25.0
 	google.golang.org/grpc v1.29.1 // indirect

@@ -45,7 +45,7 @@ func NewTwitterController(db *gorm.DB, redisClient *redis.Client, twitterClient 
 // @Router /twitters [get]
 func (controller *TwitterController) Get(c echo.Context) error {
 	if err := controller.Usecase.Get(); err != nil {
-		return c.JSON(interfaces.GetErrorResponse(err))
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
 	return c.JSON(http.StatusOK, "ok")
 }
@@ -67,14 +67,12 @@ func (controller *TwitterController) Create(c echo.Context) error {
 	var input ports.TwitterInputPort
 
 	if err := c.Bind(&input); err != nil {
-		c.JSON(http.StatusBadRequest, interfaces.ErrorResponseObject{
-			Message: err.Error(),
-		})
+		c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	output, err := controller.Usecase.Create(&input)
 	if err != nil {
-		c.JSON(interfaces.GetErrorResponse(err))
+		c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	return c.JSON(http.StatusOK, output)

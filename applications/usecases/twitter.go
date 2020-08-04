@@ -1,13 +1,8 @@
 package usecases
 
 import (
-	"fmt"
-	"log"
-	"math/rand"
 	"strconv"
-	"time"
 
-	"homeapi/applications"
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
@@ -29,52 +24,43 @@ type TwitterUsecase struct {
 
 const FIRST_TURN = 0
 
-func (usecase *TwitterUsecase) Get() *applications.UsecaseError {
-	time.Sleep(time.Second * time.Duration(rand.Intn(1200))) // redisからターンを取得
+func (usecase *TwitterUsecase) Get() error {
 	key := "tweetTurn"
 	tweetTurn, err := usecase.RedisClient.Get(key).Result()
 	if err != nil {
 		if err.Error() == "redis: nil" {
-			err := usecase.RedisClient.Set(key, FIRST_TURN, 0).Err()
-			if uerr := applications.GetUErrorByError(err); uerr != nil {
-				usecase.Logging.Error(uerr)
-				return uerr
+			if err := usecase.RedisClient.Set(key, FIRST_TURN, 0).Err(); err != nil {
+				usecase.Logging.Error(err)
+				return err
 			}
 		}
 	}
 
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return uerr
-	}
-
 	// ターンから１プラス
-	log.Printf("キーの内容  : %v -- %v", key, tweetTurn)
 	tweetTurnInt, _ := strconv.Atoi(tweetTurn)
 	tweetTurnInt++
 
 	// ターンと同じIDのツイートメッセージ取得
 	tweetContents, err := usecase.TwitterRepository.Get(usecase.DB, tweetTurnInt)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return err
 	}
 
 	//tweet, res, err := client.Statuses.Update("ツイートする本文", nil)
 	_, _, err = usecase.TwitterClient.Statuses.Update(tweetContents.Message, nil)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return err
 	}
 
 	//ツイートテーブルのmaxID取得
 	maxID, err := usecase.TwitterRepository.Last(usecase.DB)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return err
 	}
 
-	log.Printf("maxID : %v", maxID)
 	if maxID == tweetTurnInt {
 		tweetTurnInt = FIRST_TURN
 	}
@@ -82,34 +68,34 @@ func (usecase *TwitterUsecase) Get() *applications.UsecaseError {
 	tweetTurn = strconv.Itoa(tweetTurnInt)
 	// 今のターンをredisにセットする
 	if err := usecase.RedisClient.Set(key, tweetTurn, 0).Err(); err != nil {
-		fmt.Println("redis.Client.Set Error:", err)
+		usecase.Logging.Error(err)
+		return err
 	}
+
 	return nil
 }
 
-func (usecase *TwitterUsecase) Create(input *ports.TwitterInputPort) (*ports.TwitterInputPort, *applications.UsecaseError) {
+func (usecase *TwitterUsecase) Create(input *ports.TwitterInputPort) (*ports.TwitterInputPort, error) {
 	twitter := &domain.Twitter{
 		Message: input.Message,
 	}
 
 	var err error
 	twitter.CreatedAt, err = util.JapaneseNowTime()
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	twitter.UpdatedAt, err = util.JapaneseNowTime()
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
-	err = usecase.TwitterRepository.Insert(usecase.DB, twitter)
-	log.Printf("エラーの内容 : %v", err)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err := usecase.TwitterRepository.Insert(usecase.DB, twitter); err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 	return nil, nil
 }

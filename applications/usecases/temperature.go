@@ -1,11 +1,8 @@
 package usecases
 
 import (
-	"log"
-	"net/http"
-	"reflect"
+	"fmt"
 
-	"homeapi/applications"
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
@@ -22,11 +19,11 @@ type TemperatureUsecase struct {
 	Logging               logging.Logging
 }
 
-func (usecase *TemperatureUsecase) List() (*[]ports.TemperatureOutputPort, *applications.UsecaseError) {
+func (usecase *TemperatureUsecase) List() (*[]ports.TemperatureOutputPort, error) {
 	temperatures, err := usecase.TemperatureRepository.List(usecase.DB)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	outputs := make([]ports.TemperatureOutputPort, len(temperatures))
@@ -41,41 +38,31 @@ func (usecase *TemperatureUsecase) List() (*[]ports.TemperatureOutputPort, *appl
 	return &outputs, nil
 }
 
-func (usecase *TemperatureUsecase) Create(input *ports.TemperatureInputPort) (*ports.TemperatureOutputPort, *applications.UsecaseError) {
+func (usecase *TemperatureUsecase) Create(input *ports.TemperatureInputPort) (*ports.TemperatureOutputPort, error) {
 	temperature := &domain.Temperature{
 		Temp: input.Temp,
 		Humi: input.Humi,
 	}
 
+	var err error
 	if temperature.Temp == "" {
-		usecaseError := &applications.UsecaseError{
-			Code: http.StatusBadRequest,
-			Msg:  "温度が入っていません",
-		}
-		return nil, usecaseError
+		return nil, fmt.Errorf("BadRequest 温度が入っていません")
 	}
 
 	if temperature.Humi == "" {
-		usecaseError := &applications.UsecaseError{
-			Code: http.StatusBadRequest,
-			Msg:  "湿度の値が入っていません",
-		}
-		return nil, usecaseError
+		return nil, fmt.Errorf("BadRequest 湿度の値が入っていません")
 	}
 
-	var err error
 	// 時間フォーマット yyyy-mm-dd
 	temperature.CreatedAt, err = util.JapaneseNowTime()
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
-	log.Printf("temperatureの方 : %v", reflect.TypeOf(temperature))
-	err = usecase.TemperatureRepository.Insert(usecase.DB, temperature)
-	if uerr := applications.GetUErrorByError(err); uerr != nil {
-		usecase.Logging.Error(uerr)
-		return nil, uerr
+	if err = usecase.TemperatureRepository.Insert(usecase.DB, temperature); err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	output := &ports.TemperatureOutputPort{

@@ -36,7 +36,6 @@ func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownCont
 // @Description 欲しいタイミングで過去の温度を出力し、グラフにできるようにする
 // @Accept  json
 // @Produce  json
-// @Param csvDownload body ports.CsvUpdownInputPort true "csvDownload""
 // @Success 200 {string} ok
 // @Failure 400 {object} interfaces.ErrorResponseObject
 // @Failure 404 {object} interfaces.ErrorResponseObject
@@ -45,7 +44,7 @@ func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownCont
 func (controller *CsvUpdownController) Download(c echo.Context) error {
 	generateTemperatures, err := controller.Usecase.Download()
 	if err != nil {
-		return c.JSON(interfaces.GetErrorResponse(err))
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	response := c.Response()

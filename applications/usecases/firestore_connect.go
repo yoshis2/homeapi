@@ -1,13 +1,12 @@
 package usecases
 
 import (
-	"net/http"
+	"fmt"
 
 	"homeapi/domain"
 
 	"homeapi/infrastructure/firebases"
 
-	"homeapi/applications"
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
@@ -20,42 +19,34 @@ type FirestoreConnectUsecase struct {
 	Logging             logging.Logging
 }
 
-func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputPort, *applications.UsecaseError) {
+func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputPort, error) {
 	client, err := usecase.Firestore.Open()
-	if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
-		usecase.Logging.Error(usecaseError)
-		return nil, usecaseError
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	iter := usecase.FirestoreRepository.List(client)
 	docs, err := iter.GetAll()
-	if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
-		usecase.Logging.Error(usecaseError)
-		return nil, usecaseError
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	outputs := make([]ports.FirestoreConnectOutputPort, len(docs))
 	for i, doc := range docs {
 		if doc.Data()["name"] == nil {
-			usecaseError := &applications.UsecaseError{
-				Code: http.StatusBadRequest,
-				Msg:  "名前が存在しないデータがあります。",
-			}
-			return nil, usecaseError
+			return nil, fmt.Errorf("BadRequest 名前が存在しないデータがあります。")
 		}
 
 		if doc.Data()["address"] == nil {
-			usecaseError := &applications.UsecaseError{
-				Code: http.StatusBadRequest,
-				Msg:  "住所が存在しないデータがあります。",
-			}
-			return nil, usecaseError
+			return nil, fmt.Errorf("BadRequest 住所が存在しないデータがあります。")
 		}
 
 		japaneseTime, err := util.JapaneseNowTime()
-		if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
-			usecase.Logging.Error(usecaseError)
-			return nil, usecaseError
+		if err != nil {
+			usecase.Logging.Error(err)
+			return nil, err
 		}
 
 		outputs[i] = ports.FirestoreConnectOutputPort{
@@ -67,7 +58,7 @@ func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputP
 	return &outputs, nil
 }
 
-func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInputPort) (*ports.FirestoreConnectOutputPort, *applications.UsecaseError) {
+func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInputPort) (*ports.FirestoreConnectOutputPort, error) {
 	firestoreConnect := &domain.FirestoreConnect{
 		Collection: input.Collection,
 		Name:       input.Name,
@@ -75,39 +66,27 @@ func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInpu
 	}
 
 	client, err := usecase.Firestore.Open()
-	if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
-		usecase.Logging.Error(usecaseError)
-		return nil, usecaseError
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	if firestoreConnect.Collection == "" {
-		usecaseError := &applications.UsecaseError{
-			Code: http.StatusBadRequest,
-			Msg:  "コレクションが入っていません。",
-		}
-		return nil, usecaseError
+		return nil, fmt.Errorf("BadRequest コレクションが入っていません。")
 	}
 
 	if firestoreConnect.Address == "" {
-		usecaseError := &applications.UsecaseError{
-			Code: http.StatusBadRequest,
-			Msg:  "住所が入っていません。",
-		}
-		return nil, usecaseError
+		return nil, fmt.Errorf("BadRequest 住所が入っていません。")
 	}
 
 	if firestoreConnect.Name == "" {
-		usecaseError := &applications.UsecaseError{
-			Code: http.StatusBadRequest,
-			Msg:  "名前が入っていません。",
-		}
-		return nil, usecaseError
+		return nil, fmt.Errorf("BadRequest 名前が入っていません。")
 	}
 
 	createdAt, err := usecase.FirestoreRepository.Insert(client, firestoreConnect)
-	if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
-		usecase.Logging.Error(usecaseError)
-		return nil, usecaseError
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
 	}
 
 	defer client.Close()

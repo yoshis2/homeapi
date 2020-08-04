@@ -8,7 +8,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"homeapi/applications"
 	"homeapi/applications/logging"
 	"homeapi/applications/repository"
 	"homeapi/domain"
@@ -20,11 +19,11 @@ type CsvUpdownUsecase struct {
 	Logging               logging.Logging
 }
 
-func (usecase *CsvUpdownUsecase) Download() ([][]string, *applications.UsecaseError) {
+func (usecase *CsvUpdownUsecase) Download() ([][]string, error) {
 	temperatures, err := usecase.TemperatureRepository.List(usecase.Database)
-	if usecaseError := applications.GetUErrorByError(err); usecaseError != nil {
+	if err != nil {
 		usecase.Logging.Error(err)
-		return nil, usecaseError
+		return nil, err
 	}
 
 	var newTemperatures []domain.Temperature
