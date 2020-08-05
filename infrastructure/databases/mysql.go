@@ -23,7 +23,7 @@ func (mysql *Mysql) Open() *gorm.DB {
 	name := os.Getenv("DB_NAME")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASS")
-	option := "charset=utf8&parseTime=True&loc=Asia%2FTokyo"
+	option := "charset=utf8mb4&parseTime=True&loc=Local"
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s", user, password, host, name, option)
 

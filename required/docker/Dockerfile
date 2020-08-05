@@ -11,7 +11,7 @@ RUN go get -u github.com/joho/godotenv && \
     go get -u github.com/mattn/go-sqlite3  && \
     go get -u github.com/derekparker/delve/cmd/dlv
 RUN go get -u bitbucket.org/liamstask/goose/cmd/goose
-RUN go get -u github.com/pilu/fresh 
+RUN go get -u github.com/pilu/fresh
 
 RUN go mod init && go mod tidy && \
     go get -u github.com/labstack/echo/v4 && \

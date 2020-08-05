@@ -57,7 +57,7 @@ func (controller *TwitterController) Get(c echo.Context) error {
 // @Description 欲しいタイミングで過去の温度を出力し、グラフにできるようにする
 // @Accept  json
 // @Produce  json
-// @Param twitter body ports.TwitterInputPort true "twitter""
+// @Param twitter body ports.TwitterInputPort true "twitter"
 // @Success 200 {object} ports.TwiterOutputPort
 // @Failure 400 {object} interfaces.ErrorResponseObject
 // @Failure 404 {object} interfaces.ErrorResponseObject

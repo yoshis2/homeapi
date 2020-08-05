@@ -68,16 +68,12 @@ func (controller *FirestoreConnectController) Create(c echo.Context) error {
 	var input ports.FirestoreConnectInputPort
 
 	if err := c.Bind(&input); err != nil {
-		return c.JSON(http.StatusBadRequest, interfaces.ErrorResponseObject{
-			Message: err.Error(),
-		})
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	outputs, err := controller.Usecase.Create(&input)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, interfaces.ErrorResponseObject{
-			Message: err.Error(),
-		})
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	return c.JSON(http.StatusOK, outputs)
