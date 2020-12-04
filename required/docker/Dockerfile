@@ -5,13 +5,14 @@ ENV GOBIN /go/bin
 WORKDIR /go/src/homeapi
 
 RUN apk update && apk upgrade
-RUN apk add --virtual --no-cache bash gcc musl-dev git
+RUN apk add bash gcc musl-dev git
 
 RUN go get -u github.com/joho/godotenv && \
     go get -u github.com/mattn/go-sqlite3  && \
-    go get -u github.com/derekparker/delve/cmd/dlv
+    go get -u github.com/go-delve/delve/cmd/dlv &&\
+    go get -u github.com/pilu/fresh
 RUN go get -u bitbucket.org/liamstask/goose/cmd/goose
-RUN go get -u github.com/pilu/fresh
+RUN go get -u github.com/golang/mock/mockgen
 
 RUN go mod init && go mod tidy && \
     go get -u github.com/labstack/echo/v4 && \

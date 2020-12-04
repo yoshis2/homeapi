@@ -20,10 +20,12 @@ type CsvUpdownController struct {
 
 // NewCsvController はnewコントローラー
 func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownController {
+	repository := &repository.TemperatureRepository{
+		Database: database,
+	}
 	return &CsvUpdownController{
 		Usecase: &usecases.CsvUpdownUsecase{
-			TemperatureRepository: &repository.TemperatureRepository{},
-			Database:              database,
+			TemperatureRepository: repository,
 			Logging:               logging,
 		},
 	}

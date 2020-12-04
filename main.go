@@ -5,13 +5,13 @@ import (
 	"log"
 	"os"
 
-	"homeapi/infrastructure/ex_api"
-
 	"homeapi/docs"
 	"homeapi/infrastructure/databases"
+	"homeapi/infrastructure/ex_api"
 	"homeapi/infrastructure/logging"
 	"homeapi/infrastructure/server"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 )
 
@@ -20,7 +20,6 @@ import (
 // @contact.email seki@threenext.com
 // @termsOfService http://swagger.io/terms/
 
-// @schemes http https
 // @securityDefinitions.basic BasicAuth
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
@@ -39,6 +38,7 @@ func main() {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = os.Getenv("SWAGGER_HOST")
 	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Schemes = []string{os.Getenv("SWAGGER_SCHEMA")}
 
 	//db
 	var newDB databases.DatabaseInterface
@@ -54,9 +54,11 @@ func main() {
 	newTwitter = ex_api.NewTwitter()
 	twitterClient := newTwitter.Open()
 
+	validate := validator.New()
+
 	//TODO dbの設定系の調整
 	db.LogMode(true)
 	db.SetLogger(&logging.GormLogger{Logging: newLogging})
 
-	server.Run(db, redisClient, twitterClient, newLogging)
+	server.Run(db, redisClient, twitterClient, newLogging, validate)
 }

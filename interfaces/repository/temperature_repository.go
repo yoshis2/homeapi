@@ -6,17 +6,19 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// TemperatureController 気温制御 Controller
 type TemperatureRepository struct {
+	Database *gorm.DB
 }
 
 // List 過去の気温データを抽出する
-func (repo *TemperatureRepository) List(db *gorm.DB) ([]domain.Temperature, error) {
+func (repo *TemperatureRepository) List() ([]domain.Temperature, error) {
 	var temperatures []domain.Temperature
-	err := db.Order("created_at desc").Limit(200).Find(&temperatures).Error
+	err := repo.Database.Order("created_at desc").Limit(200).Find(&temperatures).Error
 	return temperatures, err
 }
 
 // Insert 気温DBにデータを挿入
-func (repo *TemperatureRepository) Insert(db *gorm.DB, temperature *domain.Temperature) error {
-	return db.Create(&temperature).Error
+func (repo *TemperatureRepository) Insert(temperature *domain.Temperature) error {
+	return repo.Database.Create(&temperature).Error
 }

@@ -1,8 +1,8 @@
 package ports
 
 type TemperatureInputPort struct {
-	Temp string `json:"temp" example:"23.1"` // 温度
-	Humi string `json:"humi" example:"67.0"` // 湿度
+	Temp string `json:"temp" validate:"required" example:"23.1"` // 温度
+	Humi string `json:"humi" validate:"required" example:"67.0"` // 湿度
 }
 
 type TemperatureOutputPort struct {

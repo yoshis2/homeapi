@@ -2,11 +2,8 @@ package usecases
 
 import (
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
-
-	"github.com/jinzhu/gorm"
 
 	"homeapi/applications/logging"
 	"homeapi/applications/repository"
@@ -15,12 +12,11 @@ import (
 
 type CsvUpdownUsecase struct {
 	TemperatureRepository repository.TemperatureRepository
-	Database              *gorm.DB
 	Logging               logging.Logging
 }
 
 func (usecase *CsvUpdownUsecase) Download() ([][]string, error) {
-	temperatures, err := usecase.TemperatureRepository.List(usecase.Database)
+	temperatures, err := usecase.TemperatureRepository.List()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
@@ -39,7 +35,6 @@ func (usecase *CsvUpdownUsecase) Download() ([][]string, error) {
 func generateCSVRows(src interface{}) [][]string {
 	slices := []interface{}{}
 	if csvData := reflect.ValueOf(src); csvData.Kind() == reflect.Slice {
-		log.Printf("vの正体 : %v", csvData.Kind())
 		for i := 0; i < csvData.Len(); i++ {
 			slices = append(slices, csvData.Index(i).Interface())
 		}

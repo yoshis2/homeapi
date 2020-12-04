@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 
@@ -19,12 +20,15 @@ type TemperatureController struct {
 }
 
 // NewTemperatureController Create New Temperature Controller
-func NewTemperatureController(db *gorm.DB, logging logging.Logging) *TemperatureController {
+func NewTemperatureController(db *gorm.DB, logging logging.Logging, validate *validator.Validate) *TemperatureController {
+	repository := &repository.TemperatureRepository{
+		Database: db,
+	}
 	return &TemperatureController{
 		Usecase: &usecases.TemperatureUsecase{
-			TemperatureRepository: &repository.TemperatureRepository{},
-			DB:                    db,
+			TemperatureRepository: repository,
 			Logging:               logging,
+			Validator:             validate,
 		},
 	}
 }
@@ -66,11 +70,16 @@ func (controller *TemperatureController) Create(c echo.Context) error {
 	var input ports.TemperatureInputPort
 
 	if err := c.Bind(&input); err != nil {
-		c.JSON(interfaces.ErrorResponse(err))
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
+
+	if err := controller.Usecase.Validator.Struct(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
 	output, err := controller.Usecase.Create(&input)
 	if err != nil {
-		c.JSON(interfaces.ErrorResponse(err))
+		return c.JSON(interfaces.ErrorResponse(err))
 	}
 
 	return c.JSON(http.StatusOK, output)

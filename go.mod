@@ -3,11 +3,8 @@ module homeapi
 go 1.15
 
 require (
-	cloud.google.com/go/bigquery v1.10.0 // indirect
-	cloud.google.com/go/datastore v1.2.0 // indirect
 	cloud.google.com/go/firestore v1.3.0
 	cloud.google.com/go/logging v1.1.0
-	cloud.google.com/go/pubsub v1.6.1 // indirect
 	cloud.google.com/go/storage v1.11.0 // indirect
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
@@ -17,14 +14,15 @@ require (
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/go-openapi/spec v0.19.9 // indirect
 	github.com/go-openapi/swag v0.19.9 // indirect
+	github.com/go-playground/assert/v2 v2.0.1 // indirect
+	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/golang/mock v1.5.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/now v1.1.1 // indirect
 	github.com/joho/godotenv v1.3.0
-	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/labstack/echo/v4 v4.1.17
-	github.com/labstack/gommon v0.3.0
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
@@ -34,7 +32,7 @@ require (
 	github.com/onsi/gomega v1.10.2 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.6.0
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/echo-swagger v1.0.0
 	github.com/swaggo/swag v1.6.7
 	golang.org/x/net v0.0.0-20200904194848-62affa334b73 // indirect
@@ -47,6 +45,4 @@ require (
 	google.golang.org/grpc v1.32.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
-	gorm.io/gorm v1.20.1 // indirect
-	honnef.co/go/tools v0.0.1-2020.1.5 // indirect
 )

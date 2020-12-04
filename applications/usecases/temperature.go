@@ -1,26 +1,24 @@
 package usecases
 
 import (
-	"fmt"
-
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
 	"homeapi/applications/util"
 	"homeapi/domain"
 
-	"github.com/jinzhu/gorm"
+	"github.com/go-playground/validator/v10"
 )
 
 // TemperatureUsecase 気温のUsecase
 type TemperatureUsecase struct {
 	TemperatureRepository repository.TemperatureRepository
-	DB                    *gorm.DB
 	Logging               logging.Logging
+	Validator             *validator.Validate
 }
 
 func (usecase *TemperatureUsecase) List() (*[]ports.TemperatureOutputPort, error) {
-	temperatures, err := usecase.TemperatureRepository.List(usecase.DB)
+	temperatures, err := usecase.TemperatureRepository.List()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
@@ -45,22 +43,13 @@ func (usecase *TemperatureUsecase) Create(input *ports.TemperatureInputPort) (*p
 	}
 
 	var err error
-	if temperature.Temp == "" {
-		return nil, fmt.Errorf("BadRequest 温度が入っていません")
-	}
-
-	if temperature.Humi == "" {
-		return nil, fmt.Errorf("BadRequest 湿度の値が入っていません")
-	}
-
-	// 時間フォーマット yyyy-mm-dd
 	temperature.CreatedAt, err = util.JapaneseNowTime()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}
 
-	if err = usecase.TemperatureRepository.Insert(usecase.DB, temperature); err != nil {
+	if err := usecase.TemperatureRepository.Insert(temperature); err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}

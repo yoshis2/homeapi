@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
@@ -15,7 +16,7 @@ import (
 	"homeapi/interfaces/api"
 )
 
-func Run(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging) {
+func Run(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging, validate *validator.Validate) {
 	e := echo.New()
 
 	// ミドルウェア
@@ -40,7 +41,7 @@ func Run(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, 
 		v1.POST("/firestores", firestoreController.Create)
 
 		// 自宅の温度
-		temperatureController := api.NewTemperatureController(db, logging)
+		temperatureController := api.NewTemperatureController(db, logging, validate)
 		v1.GET("/temperatures", temperatureController.List)
 		v1.POST("/temperatures", temperatureController.Create)
 
