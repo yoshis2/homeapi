@@ -7,5 +7,5 @@ type Temperature struct {
 	ID        uint      `gorm:"primary_key" csv:"ID"`
 	Humi      string    `gorm:"not null" csv:"湿度"`
 	Temp      string    `gorm:"not null" csv:"温度"`
-	CreatedAt time.Time `csv:"作成日時"`
+	CreatedAt time.Time `gorm:"created_at" csv:"作成日時"`
 }

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   homeapi-app:
     image: homeapi-raspberrypi
@@ -7,33 +7,33 @@ services:
       context: .
       dockerfile: required/docker/Dockerfile
     volumes:
-    - '.:/go/src/homeapi'
+      - ".:/go/src/homeapi"
     environment:
       GO_ENV: develop
     ports:
-    - '1323:1323'
-    - '5050:5050' #delve用のポート
-    privileged: true # Delveで必要なので付与します。セキュリティ面から本番環境では使うべきではありません。 
+      - "1323:1323"
+      - "5050:5050" #delve用のポート
+    privileged: true # Delveで必要なので付与します。セキュリティ面から本番環境では使うべきではありません。
     security_opt:
       - apparmor:unconfined
     cap_add:
       - SYS_PTRACE
     tty: true
     depends_on:
-    - mysql
+      - mysql
   mysql:
     image: mysql:8
-    container_name: mysql
+    container_name: homeapi-mysql
     volumes:
-    - ./required/db-data/mysql_data:/var/lib/mysql
-    - ./required/docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./required/db-data/mysql_data:/var/lib/mysql
+      - ./required/docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # 各自設定してください
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # 各自設定してください
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_NAME}
       MYSQL_PASSWORD: ${DB_PASSWORD} # 各自設定してください
     ports:
-    - "13306:3306"
+      - "13306:3306"
     tty: true
   homeapi-redis:
     image: redis:latest
@@ -41,5 +41,5 @@ services:
     ports:
       - "26379:6379"
     volumes:
-    - ./required/db-data/redis/misc/data:/data
-    - ./required/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./required/db-data/redis/misc/data:/data
+      - ./required/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
