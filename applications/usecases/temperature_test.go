@@ -78,7 +78,6 @@ func TestInsert(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		// nowTime := time.Now()
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -92,7 +91,6 @@ func TestInsert(t *testing.T) {
 
 		dofunc := func(temperature *domain.Temperature) *domain.Temperature {
 			temperature.ID = 71
-			temperature.CreatedAt = nowTime
 			return temperature
 		}
 
