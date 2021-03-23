@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"strconv"
 
 	"homeapi/applications/logging"
@@ -10,7 +11,7 @@ import (
 	"homeapi/domain"
 
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 )
 
@@ -24,12 +25,13 @@ type TwitterUsecase struct {
 
 const FIRST_TURN = 0
 
-func (usecase *TwitterUsecase) Get() error {
+func (usecase *TwitterUsecase) Get(ctx context.Context) error {
+
 	key := "tweetTurn"
-	tweetTurn, err := usecase.RedisClient.Get(key).Result()
+	tweetTurn, err := usecase.RedisClient.Get(ctx, key).Result()
 	if err != nil {
 		if err.Error() == "redis: nil" {
-			if err := usecase.RedisClient.Set(key, FIRST_TURN, 0).Err(); err != nil {
+			if err := usecase.RedisClient.Set(ctx, key, FIRST_TURN, 0).Err(); err != nil {
 				usecase.Logging.Error(err)
 				return err
 			}
@@ -67,7 +69,7 @@ func (usecase *TwitterUsecase) Get() error {
 
 	tweetTurn = strconv.Itoa(tweetTurnInt)
 	// 今のターンをredisにセットする
-	if err := usecase.RedisClient.Set(key, tweetTurn, 0).Err(); err != nil {
+	if err := usecase.RedisClient.Set(ctx, key, tweetTurn, 0).Err(); err != nil {
 		usecase.Logging.Error(err)
 		return err
 	}
@@ -75,7 +77,7 @@ func (usecase *TwitterUsecase) Get() error {
 	return nil
 }
 
-func (usecase *TwitterUsecase) Create(input *ports.TwitterInputPort) (*ports.TwitterInputPort, error) {
+func (usecase *TwitterUsecase) Create(ctx context.Context, input *ports.TwitterInputPort) (*ports.TwitterInputPort, error) {
 	twitter := &domain.Twitter{
 		Message: input.Message,
 	}

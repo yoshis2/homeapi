@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"strings"
@@ -15,8 +16,8 @@ type CsvUpdownUsecase struct {
 	Logging               logging.Logging
 }
 
-func (usecase *CsvUpdownUsecase) Download() ([][]string, error) {
-	temperatures, err := usecase.TemperatureRepository.List()
+func (usecase *CsvUpdownUsecase) Download(ctx context.Context) ([][]string, error) {
+	temperatures, err := usecase.TemperatureRepository.List(ctx)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err

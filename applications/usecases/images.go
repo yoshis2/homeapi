@@ -70,7 +70,7 @@ func (usecase *ImagesUsecase) Upload(input *ports.ImagesInputPort) (*ports.Image
 	}
 
 	if err := applications.Transaction(usecase.Database, func(tx *gorm.DB) error {
-		if err := usecase.ImageRepository.Insert(usecase.Database, &images); err != nil {
+		if err := usecase.ImageRepository.Insert(&images); err != nil {
 			return err
 		}
 

@@ -20,9 +20,12 @@ type ImagesController struct {
 
 // NewImagesController は画像アップロードコントローラー
 func NewImagesController(database *gorm.DB, logging logging.Logging) *ImagesController {
+	repository := &repository.ImageRepository{
+		Database: database,
+	}
 	return &ImagesController{
 		Usecase: &usecases.ImagesUsecase{
-			ImageRepository: &repository.ImageRepository{},
+			ImageRepository: repository,
 			Database:        database,
 			Logging:         logging,
 		},

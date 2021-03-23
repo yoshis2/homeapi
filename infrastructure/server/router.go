@@ -6,7 +6,7 @@ import (
 
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/go-playground/validator/v10"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -16,7 +16,13 @@ import (
 	"homeapi/interfaces/api"
 )
 
-func Run(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging, validate *validator.Validate) {
+func Run(
+	db *gorm.DB,
+	redisClient *redis.Client,
+	twitterClient *twitter.Client,
+	logging logging.Logging,
+	validate *validator.Validate,
+) {
 	e := echo.New()
 
 	// ミドルウェア

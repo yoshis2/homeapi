@@ -1,30 +1,21 @@
 package repository
 
 import (
+	"context"
 	"homeapi/domain"
 	"regexp"
 	"testing"
 	"time"
 
+	"homeapi/infrastructure/databases"
+
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 )
 
-func getDBMock() (*gorm.DB, sqlmock.Sqlmock, error) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		return nil, nil, err
-	}
-
-	gdb, err := gorm.Open("mysql", db)
-	if err != nil {
-		return nil, nil, err
-	}
-	return gdb, mock, nil
-}
 func TestTemperatureList(t *testing.T) {
-	db, mock, err := getDBMock()
+	ctx := context.Background()
+	db, mock, err := databases.MySQLMock()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +48,7 @@ func TestTemperatureList(t *testing.T) {
 			AddRow(4, "11.8", "60", nowTime),
 		)
 
-	res, err := repo.List()
+	res, err := repo.List(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +59,7 @@ func TestTemperatureList(t *testing.T) {
 }
 
 func TemperatureInsert(t *testing.T) {
-	db, mock, err := getDBMock()
+	db, mock, err := databases.MySQLMock()
 	if err != nil {
 		t.Fatal(err)
 	}

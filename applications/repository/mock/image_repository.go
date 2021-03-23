@@ -9,7 +9,6 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	gorm "github.com/jinzhu/gorm"
 )
 
 // MockImageRepository is a mock of ImageRepository interface.
@@ -36,15 +35,15 @@ func (m *MockImageRepository) EXPECT() *MockImageRepositoryMockRecorder {
 }
 
 // Insert mocks base method.
-func (m *MockImageRepository) Insert(arg0 *gorm.DB, arg1 *domain.Images) error {
+func (m *MockImageRepository) Insert(arg0 *domain.Images) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", arg0, arg1)
+	ret := m.ctrl.Call(m, "Insert", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockImageRepositoryMockRecorder) Insert(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockImageRepositoryMockRecorder) Insert(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockImageRepository)(nil).Insert), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockImageRepository)(nil).Insert), arg0)
 }

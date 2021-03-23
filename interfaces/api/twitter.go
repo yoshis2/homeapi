@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 
@@ -44,7 +44,8 @@ func NewTwitterController(db *gorm.DB, redisClient *redis.Client, twitterClient 
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /twitters [get]
 func (controller *TwitterController) Get(c echo.Context) error {
-	if err := controller.Usecase.Get(); err != nil {
+	ctx := c.Request().Context()
+	if err := controller.Usecase.Get(ctx); err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
 	}
 	return c.JSON(http.StatusOK, "ok")
@@ -64,13 +65,14 @@ func (controller *TwitterController) Get(c echo.Context) error {
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /twitters [post]
 func (controller *TwitterController) Create(c echo.Context) error {
+	ctx := c.Request().Context()
 	var input ports.TwitterInputPort
 
 	if err := c.Bind(&input); err != nil {
 		c.JSON(interfaces.ErrorResponse(err))
 	}
 
-	output, err := controller.Usecase.Create(&input)
+	output, err := controller.Usecase.Create(ctx, &input)
 	if err != nil {
 		c.JSON(interfaces.ErrorResponse(err))
 	}

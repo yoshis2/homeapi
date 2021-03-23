@@ -46,7 +46,8 @@ func NewTemperatureController(db *gorm.DB, logging logging.Logging, validate *va
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /temperatures [get]
 func (controller *TemperatureController) List(c echo.Context) error {
-	output, err := controller.Usecase.List()
+	ctx := c.Request().Context()
+	output, err := controller.Usecase.List(ctx)
 	if err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
 	}

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"homeapi/domain"
 	"homeapi/interfaces/repository"
 
@@ -17,6 +18,6 @@ func NewTemperatureRepository(db *gorm.DB) repository.TemperatureRepository {
 
 // TemperatureRepository Temperature Repository
 type TemperatureRepository interface {
-	List() ([]domain.Temperature, error)
+	List(ctx context.Context) ([]domain.Temperature, error)
 	Insert(*domain.Temperature) error
 }

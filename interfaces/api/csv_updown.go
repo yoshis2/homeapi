@@ -44,7 +44,7 @@ func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownCont
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /csv_updown [get]
 func (controller *CsvUpdownController) Download(c echo.Context) error {
-	generateTemperatures, err := controller.Usecase.Download()
+	generateTemperatures, err := controller.Usecase.Download(c.Request().Context())
 	if err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
 	}

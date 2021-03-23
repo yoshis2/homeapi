@@ -7,9 +7,10 @@ import (
 )
 
 type ImageRepository struct {
+	Database *gorm.DB
 }
 
 // Insert 気温DBにデータを挿入
-func (repo *ImageRepository) Insert(db *gorm.DB, image *domain.Images) error {
-	return db.Create(&image).Error
+func (repo *ImageRepository) Insert(image *domain.Images) error {
+	return repo.Database.Create(&image).Error
 }

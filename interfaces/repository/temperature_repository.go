@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"homeapi/domain"
 
 	"github.com/jinzhu/gorm"
@@ -12,7 +13,7 @@ type TemperatureRepository struct {
 }
 
 // List 過去の気温データを抽出する
-func (repo *TemperatureRepository) List() ([]domain.Temperature, error) {
+func (repo *TemperatureRepository) List(ctx context.Context) ([]domain.Temperature, error) {
 	var temperatures []domain.Temperature
 	err := repo.Database.Order("created_at desc").Limit(200).Find(&temperatures).Error
 	return temperatures, err

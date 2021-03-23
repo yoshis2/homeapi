@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
@@ -17,8 +18,8 @@ type TemperatureUsecase struct {
 	Validator             *validator.Validate
 }
 
-func (usecase *TemperatureUsecase) List() (*[]ports.TemperatureOutputPort, error) {
-	temperatures, err := usecase.TemperatureRepository.List()
+func (usecase *TemperatureUsecase) List(ctx context.Context) (*[]ports.TemperatureOutputPort, error) {
+	temperatures, err := usecase.TemperatureRepository.List(ctx)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err

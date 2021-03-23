@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"homeapi/applications/ports"
 	repositorymock "homeapi/applications/repository/mock"
 	"homeapi/applications/util"
@@ -31,6 +32,7 @@ func newMocks(ctrl *gomock.Controller) (*TemperatureUsecase, *serverMocks) {
 
 func TestList(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
+		ctx := context.Background()
 		nowTime := time.Now()
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
@@ -50,8 +52,8 @@ func TestList(t *testing.T) {
 			},
 		}
 
-		mocks.temperatureRepository.EXPECT().List().Return(temperature, nil)
-		got, err := temperatureUsecase.List()
+		mocks.temperatureRepository.EXPECT().List(ctx).Return(temperature, nil)
+		got, err := temperatureUsecase.List(ctx)
 		require.NoError(t, err)
 		if err != nil {
 			t.Errorf("error message : %v", err)
