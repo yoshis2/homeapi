@@ -28,10 +28,10 @@ services:
       - ./required/db-data/mysql_data:/var/lib/mysql
       - ./required/docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # 各自設定してください
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_NAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD} # 各自設定してください
+      MYSQL_ROOT_PASSWORD: qMc-4o37Y # 各自設定してください
+      MYSQL_DATABASE: homeapi
+      MYSQL_USER: homeapi
+      MYSQL_PASSWORD: qMc-4o37Y # 各自設定してください
     ports:
       - "13306:3306"
     tty: true

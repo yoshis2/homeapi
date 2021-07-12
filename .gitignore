@@ -14,9 +14,6 @@ docs/swagger
 docs/swagger.json
 docs/swagger.yaml
 
-# 外部インストール情報
-go.sum
-
 # SSL証明書情報
 .well-known
 
