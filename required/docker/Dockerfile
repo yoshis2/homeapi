@@ -17,7 +17,3 @@ RUN go get -u github.com/golang/mock/mockgen
 RUN go mod init && go mod tidy && \
     go get -u github.com/labstack/echo/v4 && \
     go get -u github.com/swaggo/swag/cmd/swag
-
-CMD swag init && \
-    # dlv debug --headless --listen=:5050 --log --api-version=2
-    fresh -c required/docker/runner.conf
