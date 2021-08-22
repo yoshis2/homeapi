@@ -13,6 +13,7 @@ services:
       GO_ENV: production
     ports:
     - '1323:1323'
+    command: required/docker/startup.sh
     restart: always
     tty: true
     networks:
