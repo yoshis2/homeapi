@@ -28,7 +28,6 @@ type TwitterUsecase struct {
 const FIRST_TURN = 0
 
 func (usecase *TwitterUsecase) Get(ctx context.Context) error {
-
 	key := "tweetTurn"
 	tweetTurn, err := usecase.RedisClient.Get(ctx, key).Result()
 	if err != nil {
@@ -45,7 +44,7 @@ func (usecase *TwitterUsecase) Get(ctx context.Context) error {
 	tweetTurnInt++
 
 	// ターンと同じIDのツイートメッセージ取得
-	tweetContents, err := usecase.TwitterRepository.Get(usecase.DB, tweetTurnInt)
+	tweetContents, err := usecase.TwitterRepository.Get(ctx, usecase.DB, tweetTurnInt)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return err
@@ -59,7 +58,7 @@ func (usecase *TwitterUsecase) Get(ctx context.Context) error {
 	}
 
 	//ツイートテーブルのmaxID取得
-	maxID, err := usecase.TwitterRepository.Last(usecase.DB)
+	maxID, err := usecase.TwitterRepository.Last(ctx, usecase.DB)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return err
@@ -92,7 +91,7 @@ func (usecase *TwitterUsecase) Create(ctx context.Context, input *ports.TwitterI
 		UpdatedAt: now,
 	}
 
-	if err := usecase.TwitterRepository.Insert(usecase.DB, twitter); err != nil {
+	if err := usecase.TwitterRepository.Insert(ctx, usecase.DB, twitter); err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}

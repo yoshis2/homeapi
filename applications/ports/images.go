@@ -9,7 +9,7 @@ type ImagesInputPort struct {
 }
 
 type ImagesOutputPort struct {
-	ImageName string
-	ImagePath string
-	CreatedAt time.Time
+	ImageName string    `json:"image_name"`
+	ImagePath string    `json:"image_path"`
+	CreatedAt time.Time `json:"created_at"`
 }

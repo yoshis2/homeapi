@@ -51,7 +51,7 @@ func ResizeImageList() []ImageSize {
 	return imageSizes
 }
 
-func (usecase *ImagesUsecase) Upload(input *ports.ImagesInputPort) (*ports.ImagesOutputPort, error) {
+func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImagesInputPort) (*ports.ImagesOutputPort, error) {
 	now, err := util.JapaneseNowTime()
 	if err != nil {
 		usecase.Logging.Error(err)

@@ -27,12 +27,9 @@ func (usecase *CsvUpdownUsecase) Download(ctx context.Context) ([][]string, erro
 	}
 
 	var newTemperatures []domain.Temperature
-	for _, temperature := range temperatures {
-		newTemperatures = append(newTemperatures, temperature)
-	}
+	newTemperatures = append(newTemperatures, temperatures...)
 
-	generateTemperatures := generateCSVRows(newTemperatures)
-	return generateTemperatures, nil
+	return generateCSVRows(newTemperatures), nil
 }
 
 // 構造体を配列の文字列に変更しCSVに変換できる状態にする。

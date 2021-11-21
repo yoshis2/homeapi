@@ -20,6 +20,6 @@ func (repo *TemperatureRepository) List(ctx context.Context) ([]domain.Temperatu
 }
 
 // Insert 気温DBにデータを挿入
-func (repo *TemperatureRepository) Insert(temperature *domain.Temperature) error {
+func (repo *TemperatureRepository) Insert(ctx context.Context, temperature *domain.Temperature) error {
 	return repo.Database.Create(&temperature).Error
 }

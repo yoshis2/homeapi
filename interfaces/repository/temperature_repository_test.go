@@ -59,6 +59,7 @@ func TestTemperatureList(t *testing.T) {
 }
 
 func TemperatureInsert(t *testing.T) {
+	ctx := context.Background()
 	db, mock, err := databases.MySQLMock()
 	if err != nil {
 		t.Fatal(err)
@@ -88,7 +89,7 @@ func TemperatureInsert(t *testing.T) {
 		)
 
 	// 実行
-	err = repo.Insert(temperature1)
+	err = repo.Insert(ctx, temperature1)
 	if err != nil {
 		t.Fatal(err)
 	}

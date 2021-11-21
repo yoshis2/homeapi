@@ -9,7 +9,7 @@ type CsvUpdownInputPort struct {
 }
 
 type CsvUpdownOutputPort struct {
-	ID   uint
-	Temp string
-	Humi string
+	ID   uint   `json:"id"`
+	Temp string `json:"temp"`
+	Humi string `json:"humi" `
 }

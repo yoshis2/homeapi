@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"fmt"
 
 	"homeapi/domain"
@@ -22,19 +23,21 @@ type FirestoreConnectUsecase struct {
 	Validator           *validator.Validate
 }
 
-func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputPort, error) {
+func (usecase *FirestoreConnectUsecase) List(ctx context.Context) (*[]ports.FirestoreConnectOutputPort, error) {
 	client, err := usecase.Firestore.Open()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}
 
-	iter := usecase.FirestoreRepository.List(client)
+	iter := usecase.FirestoreRepository.List(ctx, client)
 	docs, err := iter.GetAll()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}
+
+	defer client.Close()
 
 	outputs := make([]ports.FirestoreConnectOutputPort, len(docs))
 	for i, doc := range docs {
@@ -46,7 +49,7 @@ func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputP
 			return nil, fmt.Errorf("BadRequest 住所が存在しないデータがあります。")
 		}
 
-		japaneseTime, err := util.JapaneseNowTime()
+		now, err := util.JapaneseNowTime()
 		if err != nil {
 			usecase.Logging.Error(err)
 			return nil, err
@@ -55,13 +58,13 @@ func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputP
 		outputs[i] = ports.FirestoreConnectOutputPort{
 			Name:       doc.Data()["name"].(string),
 			Address:    doc.Data()["address"].(string),
-			Created_at: japaneseTime,
+			Created_at: now,
 		}
 	}
 	return &outputs, nil
 }
 
-func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInputPort) (*ports.FirestoreConnectOutputPort, error) {
+func (usecase *FirestoreConnectUsecase) Create(ctx context.Context, input *ports.FirestoreConnectInputPort) (*ports.FirestoreConnectOutputPort, error) {
 	firestoreConnect := &domain.FirestoreConnect{
 		Collection: input.Collection,
 		Name:       input.Name,
@@ -74,7 +77,7 @@ func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInpu
 		return nil, err
 	}
 
-	createdAt, err := usecase.FirestoreRepository.Insert(client, firestoreConnect)
+	createdAt, err := usecase.FirestoreRepository.Insert(ctx, client, firestoreConnect)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err

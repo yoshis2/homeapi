@@ -36,17 +36,17 @@ func (m *MockTemperatureRepository) EXPECT() *MockTemperatureRepositoryMockRecor
 }
 
 // Insert mocks base method.
-func (m *MockTemperatureRepository) Insert(arg0 *domain.Temperature) error {
+func (m *MockTemperatureRepository) Insert(ctx context.Context, temperature *domain.Temperature) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", arg0)
+	ret := m.ctrl.Call(m, "Insert", ctx, temperature)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockTemperatureRepositoryMockRecorder) Insert(arg0 interface{}) *gomock.Call {
+func (mr *MockTemperatureRepositoryMockRecorder) Insert(ctx, temperature interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockTemperatureRepository)(nil).Insert), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockTemperatureRepository)(nil).Insert), ctx, temperature)
 }
 
 // List mocks base method.

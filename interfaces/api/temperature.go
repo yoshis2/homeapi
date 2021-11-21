@@ -68,6 +68,7 @@ func (controller *TemperatureController) List(c echo.Context) error {
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /temperatures [post]
 func (controller *TemperatureController) Create(c echo.Context) error {
+	ctx := c.Request().Context()
 	var input ports.TemperatureInputPort
 
 	if err := c.Bind(&input); err != nil {
@@ -78,7 +79,7 @@ func (controller *TemperatureController) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	output, err := controller.Usecase.Create(&input)
+	output, err := controller.Usecase.Create(ctx, &input)
 	if err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
 	}

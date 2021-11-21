@@ -76,6 +76,7 @@ func TestList(t *testing.T) {
 
 func TestInsert(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
+		ctx := context.Background()
 		nowTime, err := util.JapaneseNowTime()
 		if err != nil {
 			t.Error(err)
@@ -96,14 +97,14 @@ func TestInsert(t *testing.T) {
 			return temperature
 		}
 
-		mocks.temperatureRepository.EXPECT().Insert(temperature).Do(dofunc).Return(nil)
+		mocks.temperatureRepository.EXPECT().Insert(ctx, temperature).Do(dofunc).Return(nil)
 
 		request := &ports.TemperatureInputPort{
 			Temp: "20",
 			Humi: "55",
 		}
 
-		got, err := temperatureUsecase.Create(request)
+		got, err := temperatureUsecase.Create(ctx, request)
 		require.NoError(t, err)
 
 		want := ports.TemperatureOutputPort{

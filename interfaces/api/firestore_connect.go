@@ -45,7 +45,8 @@ func NewFirestoreController(logging logging.Logging, validate *validator.Validat
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /firestores [get]
 func (controller *FirestoreConnectController) List(c echo.Context) error {
-	outputs, err := controller.Usecase.List()
+	ctx := c.Request().Context()
+	outputs, err := controller.Usecase.List(ctx)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
@@ -66,6 +67,7 @@ func (controller *FirestoreConnectController) List(c echo.Context) error {
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /firestores [post]
 func (controller *FirestoreConnectController) Create(c echo.Context) error {
+	ctx := c.Request().Context()
 	var input ports.FirestoreConnectInputPort
 
 	if err := c.Bind(&input); err != nil {
@@ -76,7 +78,7 @@ func (controller *FirestoreConnectController) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	outputs, err := controller.Usecase.Create(&input)
+	outputs, err := controller.Usecase.Create(ctx, &input)
 	if err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
 	}

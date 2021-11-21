@@ -48,6 +48,7 @@ func NewImagesController(database *gorm.DB, logging logging.Logging, validate *v
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /images [post]
 func (controller *ImagesController) Upload(c echo.Context) error {
+	ctx := c.Request().Context()
 	var input ports.ImagesInputPort
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, interfaces.ErrorResponseObject{
@@ -58,7 +59,7 @@ func (controller *ImagesController) Upload(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	output, err := controller.Usecase.Upload(&input)
+	output, err := controller.Usecase.Upload(ctx, &input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 	}
