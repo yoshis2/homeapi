@@ -11,6 +11,7 @@ import (
 	"homeapi/applications/ports"
 	"homeapi/applications/usecases"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,12 +21,13 @@ type FirestoreConnectController struct {
 }
 
 // NewFirestoreController はfirestoreコネクト用Newコントローラー
-func NewFirestoreController(logging logging.Logging) *FirestoreConnectController {
+func NewFirestoreController(logging logging.Logging, validate *validator.Validate) *FirestoreConnectController {
 	return &FirestoreConnectController{
 		Usecase: &usecases.FirestoreConnectUsecase{
 			FirestoreRepository: &repository.FirestoreRepository{},
 			Firestore:           &firebases.Firestore{},
 			Logging:             logging,
+			Validator:           validate,
 		},
 	}
 }
@@ -47,7 +49,6 @@ func (controller *FirestoreConnectController) List(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-
 	return c.JSON(http.StatusOK, outputs)
 }
 
@@ -69,6 +70,10 @@ func (controller *FirestoreConnectController) Create(c echo.Context) error {
 
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(interfaces.ErrorResponse(err))
+	}
+
+	if err := controller.Usecase.Validator.Struct(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	outputs, err := controller.Usecase.Create(&input)

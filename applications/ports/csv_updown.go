@@ -3,9 +3,9 @@ package ports
 import "time"
 
 type CsvUpdownInputPort struct {
-	Name      string    `json:"name" example:"テスト　太郎"`
-	Address   string    `json:"address" example:"東京都港区六本木１−１−１"`
-	CreatedAt time.Time `json:"created_at" example:"2018-11-11 11:11:11"`
+	Name      string    `json:"name" validate:"required" example:"テスト　太郎"`
+	Address   string    `json:"address" validate:"required" example:"東京都港区六本木１−１−１"`
+	CreatedAt time.Time `json:"created_at" validate:"required" example:"2018-11-11 11:11:11"`
 }
 
 type CsvUpdownOutputPort struct {

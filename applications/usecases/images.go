@@ -11,6 +11,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/gorm"
 	"github.com/nfnt/resize"
 	"github.com/pkg/errors"
@@ -28,6 +29,7 @@ type ImagesUsecase struct {
 	ImageRepository repository.ImageRepository
 	Database        *gorm.DB
 	Logging         logging.Logging
+	Validator       *validator.Validate
 }
 
 // ImageSize リサイズする画像サイズ
@@ -50,13 +52,17 @@ func ResizeImageList() []ImageSize {
 }
 
 func (usecase *ImagesUsecase) Upload(input *ports.ImagesInputPort) (*ports.ImagesOutputPort, error) {
+	now, err := util.JapaneseNowTime()
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
+	}
+
 	images := domain.Images{
 		ImageName: input.ImageName,
 		ImagePath: input.ImagePath,
+		CreatedAt: now,
 	}
-
-	var err error
-	images.CreatedAt, err = util.JapaneseNowTime()
 
 	// ファイルタイプを取得
 	imageType := GetImageType(input.ImageData)
@@ -124,7 +130,7 @@ func DecodeBase64Image(imageType, base64ImageStr string) (image.Image, error) {
 func ImageUploads(imageType, imageName string, image image.Image) error {
 	// 一つでもエラーが出ると全て戻す処理。
 	errorGroup, ctx := errgroup.WithContext(context.Background())
-	ctx, cancel := context.WithCancel(ctx)
+	_, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	for _, size := range ResizeImageList() {

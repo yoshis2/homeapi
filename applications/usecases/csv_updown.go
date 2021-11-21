@@ -9,11 +9,14 @@ import (
 	"homeapi/applications/logging"
 	"homeapi/applications/repository"
 	"homeapi/domain"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type CsvUpdownUsecase struct {
 	TemperatureRepository repository.TemperatureRepository
 	Logging               logging.Logging
+	Validator             *validator.Validate
 }
 
 func (usecase *CsvUpdownUsecase) Download(ctx context.Context) ([][]string, error) {

@@ -11,6 +11,7 @@ import (
 	"homeapi/domain"
 
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 )
@@ -21,6 +22,7 @@ type TwitterUsecase struct {
 	RedisClient       *redis.Client
 	TwitterClient     *twitter.Client
 	Logging           logging.Logging
+	Validator         *validator.Validate
 }
 
 const FIRST_TURN = 0
@@ -78,26 +80,21 @@ func (usecase *TwitterUsecase) Get(ctx context.Context) error {
 }
 
 func (usecase *TwitterUsecase) Create(ctx context.Context, input *ports.TwitterInputPort) (*ports.TwitterInputPort, error) {
+	now, err := util.JapaneseNowTime()
+	if err != nil {
+		usecase.Logging.Error(err)
+		return nil, err
+	}
+
 	twitter := &domain.Twitter{
-		Message: input.Message,
-	}
-
-	var err error
-	twitter.CreatedAt, err = util.JapaneseNowTime()
-	if err != nil {
-		usecase.Logging.Error(err)
-		return nil, err
-	}
-
-	twitter.UpdatedAt, err = util.JapaneseNowTime()
-	if err != nil {
-		usecase.Logging.Error(err)
-		return nil, err
+		Message:   input.Message,
+		CreatedAt: now,
+		UpdatedAt: now,
 	}
 
 	if err := usecase.TwitterRepository.Insert(usecase.DB, twitter); err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}
-	return nil, nil
+	return &ports.TwitterInputPort{Message: input.Message}, nil
 }

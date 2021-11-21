@@ -42,7 +42,7 @@ func Run(
 	v1 := e.Group("/api/v1")
 	{
 		// firestoreデータ登録参照
-		firestoreController := api.NewFirestoreController(logging)
+		firestoreController := api.NewFirestoreController(logging, validate)
 		v1.GET("/firestores", firestoreController.List)
 		v1.POST("/firestores", firestoreController.Create)
 
@@ -51,13 +51,13 @@ func Run(
 		v1.GET("/temperatures", temperatureController.List)
 		v1.POST("/temperatures", temperatureController.Create)
 
-		csvupdownController := api.NewCsvController(db, logging)
+		csvupdownController := api.NewCsvController(db, logging, validate)
 		v1.GET("/csv_updown", csvupdownController.Download)
 
-		imagesController := api.NewImagesController(db, logging)
+		imagesController := api.NewImagesController(db, logging, validate)
 		v1.POST("/images", imagesController.Upload)
 
-		twitterController := api.NewTwitterController(db, redisClient, twitterClient, logging)
+		twitterController := api.NewTwitterController(db, redisClient, twitterClient, logging, validate)
 		v1.GET("/twitters", twitterController.Get)
 		v1.POST("/twitters", twitterController.Create)
 	}

@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 
@@ -19,7 +20,7 @@ type ImagesController struct {
 }
 
 // NewImagesController は画像アップロードコントローラー
-func NewImagesController(database *gorm.DB, logging logging.Logging) *ImagesController {
+func NewImagesController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *ImagesController {
 	repository := &repository.ImageRepository{
 		Database: database,
 	}
@@ -28,6 +29,7 @@ func NewImagesController(database *gorm.DB, logging logging.Logging) *ImagesCont
 			ImageRepository: repository,
 			Database:        database,
 			Logging:         logging,
+			Validator:       validate,
 		},
 	}
 }
@@ -52,6 +54,10 @@ func (controller *ImagesController) Upload(c echo.Context) error {
 			Message: err.Error(),
 		})
 	}
+	if err := controller.Usecase.Validator.Struct(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
 	output, err := controller.Usecase.Upload(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())

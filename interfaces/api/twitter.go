@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
@@ -19,7 +20,7 @@ type TwitterController struct {
 	Usecase *usecases.TwitterUsecase
 }
 
-func NewTwitterController(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging) *TwitterController {
+func NewTwitterController(db *gorm.DB, redisClient *redis.Client, twitterClient *twitter.Client, logging logging.Logging, validate *validator.Validate) *TwitterController {
 	return &TwitterController{
 		Usecase: &usecases.TwitterUsecase{
 			TwitterRepository: &repository.TwitterRepository{},
@@ -27,6 +28,7 @@ func NewTwitterController(db *gorm.DB, redisClient *redis.Client, twitterClient 
 			RedisClient:       redisClient,
 			TwitterClient:     twitterClient,
 			Logging:           logging,
+			Validator:         validate,
 		},
 	}
 }
@@ -70,6 +72,10 @@ func (controller *TwitterController) Create(c echo.Context) error {
 
 	if err := c.Bind(&input); err != nil {
 		c.JSON(interfaces.ErrorResponse(err))
+	}
+
+	if err := controller.Usecase.Validator.Struct(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	output, err := controller.Usecase.Create(ctx, &input)

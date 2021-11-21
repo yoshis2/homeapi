@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 
@@ -19,7 +20,7 @@ type CsvUpdownController struct {
 }
 
 // NewCsvController はnewコントローラー
-func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownController {
+func NewCsvController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *CsvUpdownController {
 	repository := &repository.TemperatureRepository{
 		Database: database,
 	}
@@ -27,6 +28,7 @@ func NewCsvController(database *gorm.DB, logging logging.Logging) *CsvUpdownCont
 		Usecase: &usecases.CsvUpdownUsecase{
 			TemperatureRepository: repository,
 			Logging:               logging,
+			Validator:             validate,
 		},
 	}
 }

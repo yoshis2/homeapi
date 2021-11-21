@@ -25,40 +25,41 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	err := godotenv.Load(fmt.Sprintf("infrastructure/config/%s.env", os.Getenv("GO_ENV")))
-	if err != nil {
+	if err := godotenv.Load(fmt.Sprintf("infrastructure/config/%s.env", os.Getenv("GO_ENV"))); err != nil {
 		log.Fatal("Error loading .env file")
 	}
+	validate := validator.New()
 	newLogging := logging.NewLogrusLogging() // Logrus
 	//newLogging := logging.NewStackdriverLogging() // stack driver
 	defer newLogging.Close()
 
+	swaggerSet()
+
+	var newDB databases.DatabaseInterface
+	var newRedis databases.RedisInterface
+	var newTwitter ex_api.TwitterInterface
+
+	newDB = databases.NewMysql() //mysql
+	db := newDB.Open()
+	defer db.Close()
+	db.LogMode(true)
+	db.SetLogger(&logging.GormLogger{Logging: newLogging})
+
+	newRedis = databases.NewRedis()
+	redisClient := newRedis.Open()
+	// defer redisClient.Close()
+
+	newTwitter = ex_api.NewTwitter()
+	twitterClient := newTwitter.Open()
+
+	server.Run(db, redisClient, twitterClient, newLogging, validate)
+}
+
+func swaggerSet() {
 	docs.SwaggerInfo.Title = "Home APIのSwagger"
 	docs.SwaggerInfo.Description = "家の中の温度や監視カメラの状態を取得するAPI"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = os.Getenv("SWAGGER_HOST")
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	docs.SwaggerInfo.Schemes = []string{os.Getenv("SWAGGER_SCHEMA")}
-
-	//db
-	var newDB databases.DatabaseInterface
-	newDB = databases.NewMysql() //mysql
-	db := newDB.Open()
-	defer db.Close()
-
-	var newRedis databases.RedisInterface
-	newRedis = databases.NewRedis()
-	redisClient := newRedis.Open()
-
-	var newTwitter ex_api.TwitterInterface
-	newTwitter = ex_api.NewTwitter()
-	twitterClient := newTwitter.Open()
-
-	validate := validator.New()
-
-	//TODO dbの設定系の調整
-	db.LogMode(true)
-	db.SetLogger(&logging.GormLogger{Logging: newLogging})
-
-	server.Run(db, redisClient, twitterClient, newLogging, validate)
 }

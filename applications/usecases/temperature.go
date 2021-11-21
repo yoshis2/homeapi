@@ -38,16 +38,16 @@ func (usecase *TemperatureUsecase) List(ctx context.Context) (*[]ports.Temperatu
 }
 
 func (usecase *TemperatureUsecase) Create(input *ports.TemperatureInputPort) (*ports.TemperatureOutputPort, error) {
-	temperature := &domain.Temperature{
-		Temp: input.Temp,
-		Humi: input.Humi,
-	}
-
-	var err error
-	temperature.CreatedAt, err = util.JapaneseNowTime()
+	now, err := util.JapaneseNowTime()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
+	}
+
+	temperature := &domain.Temperature{
+		Temp:      input.Temp,
+		Humi:      input.Humi,
+		CreatedAt: now,
 	}
 
 	if err := usecase.TemperatureRepository.Insert(temperature); err != nil {

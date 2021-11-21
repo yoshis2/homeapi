@@ -11,12 +11,15 @@ import (
 	"homeapi/applications/ports"
 	"homeapi/applications/repository"
 	"homeapi/applications/util"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type FirestoreConnectUsecase struct {
 	FirestoreRepository repository.FirestoreRepository
 	Firestore           *firebases.Firestore
 	Logging             logging.Logging
+	Validator           *validator.Validate
 }
 
 func (usecase *FirestoreConnectUsecase) List() (*[]ports.FirestoreConnectOutputPort, error) {
@@ -69,18 +72,6 @@ func (usecase *FirestoreConnectUsecase) Create(input *ports.FirestoreConnectInpu
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
-	}
-
-	if firestoreConnect.Collection == "" {
-		return nil, fmt.Errorf("BadRequest コレクションが入っていません。")
-	}
-
-	if firestoreConnect.Address == "" {
-		return nil, fmt.Errorf("BadRequest 住所が入っていません。")
-	}
-
-	if firestoreConnect.Name == "" {
-		return nil, fmt.Errorf("BadRequest 名前が入っていません。")
 	}
 
 	createdAt, err := usecase.FirestoreRepository.Insert(client, firestoreConnect)

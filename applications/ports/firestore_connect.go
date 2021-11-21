@@ -3,9 +3,9 @@ package ports
 import "time"
 
 type FirestoreConnectInputPort struct {
-	Collection string `json:"collection" example:"members"`    // firestoreのコレクション
-	Address    string `json:"address" example:"東京都港区六本木１−１−１"` // 名前
-	Name       string `json:"name" example:"テスト　太郎"`           //  住所
+	Collection string `json:"collection" validate:"required" example:"members"`    // firestoreのコレクション
+	Address    string `json:"address" validate:"required" example:"東京都港区六本木１−１−１"` // 名前
+	Name       string `json:"name" validate:"required" example:"テスト　太郎"`           //  住所
 }
 
 type FirestoreConnectOutputPort struct {

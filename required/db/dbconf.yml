@@ -5,7 +5,7 @@ test:
 
 development:
     driver: mymysql
-    open: tcp:mysql:3306*homeapi/homeapi/qMc-4o37Y
+    open: tcp:homeapi-mysql:3306*homeapi/homeapi/qMc-4o37Y
     
 production:
     driver: mymysql
