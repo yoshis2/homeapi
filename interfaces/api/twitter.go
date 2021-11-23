@@ -6,8 +6,8 @@ import (
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"

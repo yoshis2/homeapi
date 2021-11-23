@@ -1,6 +1,6 @@
 package applications
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 //Transact DBのトランザクション管理
 func Transaction(db *gorm.DB, txFunc func(*gorm.DB) error) (err error) {

@@ -1,10 +1,11 @@
 package repository
 
 import (
+	"context"
 	"homeapi/domain"
 	"homeapi/interfaces/repository"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 //go:generate mockgen -source=./image_repository.go -package=repositorymock -destination=./mock/image_repository.go
@@ -17,5 +18,5 @@ func NewImageRepository(db *gorm.DB) repository.ImageRepository {
 
 // ImageRepository Image Repository
 type ImageRepository interface {
-	Insert(*domain.Images) error
+	Insert(ctx context.Context, image *domain.Images) error
 }

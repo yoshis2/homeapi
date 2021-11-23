@@ -2,7 +2,7 @@ package databases
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func MySQLMock() (*gorm.DB, sqlmock.Sqlmock, error) {

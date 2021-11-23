@@ -9,6 +9,7 @@ import (
 )
 
 type FirestoreRepository struct {
+	Client *firestore.Client
 }
 
 func (repo *FirestoreRepository) List(ctx context.Context, client *firestore.Client) *firestore.DocumentIterator {

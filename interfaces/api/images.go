@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 
 	"homeapi/applications/logging"
 	"homeapi/applications/ports"

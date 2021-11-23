@@ -1,6 +1,5 @@
 
--- +goose Up
--- SQL in section 'Up' is executed when this migration is applied
+-- +migrate Up
 create table temperatures
 (
   id         int unsigned auto_increment
@@ -13,6 +12,5 @@ create table temperatures
 
 
 
--- +goose Down
--- SQL section 'Down' is executed when this migration is rolled back
+-- +migrate Down
 DROP TABLE `temperatures`;

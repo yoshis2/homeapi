@@ -8,7 +8,6 @@ RUN apk update && apk upgrade && \
     apk add bash gcc musl-dev git
 
 RUN go get -u github.com/mattn/go-sqlite3 && \
-    go get -u bitbucket.org/liamstask/goose/cmd/goose && \
     go get -v github.com/rubenv/sql-migrate/...
 
 RUN go get -u github.com/labstack/echo/v4 && \

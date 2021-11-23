@@ -73,15 +73,15 @@ https://www.seldnext.com/swagger/index.html
 - Redis
 - Firebase Firestore
 
-## Gooseのファイル作成
+## sql-migrateのファイル作成
 
 ### development環境の実行
 
 ```shell
 make in
 cd required
-goose create createTwitters sql
-goose up
+sql-migrate create createTwitters
+sql-migrate up
 ```
 
 ### production環境の実行
@@ -89,6 +89,6 @@ goose up
 ```shell
 make in
 cd required
-goose -env production create createTwitters sql
-goose -env production up
+sql-migrate new -env="production" create_users
+sql-migrate up -env="production"
 ```

@@ -1,6 +1,5 @@
 
--- +goose Up
--- SQL in section 'Up' is executed when this migration is applied
+-- +migrate Up
 create table twitters (
     id int unsigned auto_increment primary key,
     message varchar(160) not null,
@@ -9,7 +8,6 @@ create table twitters (
 );
 
 
--- +goose Down
--- SQL section 'Down' is executed when this migration is rolled back
+-- +migrate Down
 
 drop table twitters;

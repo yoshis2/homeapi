@@ -4,24 +4,25 @@ import (
 	"context"
 	"homeapi/domain"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type TwitterRepository struct {
+	Database *gorm.DB
 }
 
-func (repo *TwitterRepository) Insert(ctx context.Context, db *gorm.DB, twitter *domain.Twitter) error {
-	return db.Create(&twitter).Error
+func (repo *TwitterRepository) Insert(ctx context.Context, twitter *domain.Twitter) error {
+	return repo.Database.Create(&twitter).Error
 }
 
-func (repo *TwitterRepository) Get(ctx context.Context, db *gorm.DB, ID int) (*domain.Twitter, error) {
+func (repo *TwitterRepository) Get(ctx context.Context, ID int) (*domain.Twitter, error) {
 	twitter := domain.Twitter{}
-	err := db.Where("id = ?", ID).First(&twitter).Error
+	err := repo.Database.Where("id = ?", ID).First(&twitter).Error
 	return &twitter, err
 }
 
-func (repo *TwitterRepository) Last(ctx context.Context, db *gorm.DB) (int, error) {
+func (repo *TwitterRepository) Last(ctx context.Context) (int, error) {
 	twitter := domain.Twitter{}
-	err := db.Last(&twitter).Error
+	err := repo.Database.Last(&twitter).Error
 	return twitter.ID, err
 }

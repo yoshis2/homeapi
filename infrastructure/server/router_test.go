@@ -11,8 +11,8 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/go-redis/redismock/v8"
 	"github.com/golang/mock/gomock"
-	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/suite"
+	"gorm.io/gorm"
 )
 
 type RoutingModuleTestSuite struct {

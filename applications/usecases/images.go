@@ -12,10 +12,10 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/jinzhu/gorm"
 	"github.com/nfnt/resize"
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
+	"gorm.io/gorm"
 
 	"homeapi/applications"
 	"homeapi/applications/logging"
@@ -76,7 +76,7 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImagesInp
 	}
 
 	if err := applications.Transaction(usecase.Database, func(tx *gorm.DB) error {
-		if err := usecase.ImageRepository.Insert(&images); err != nil {
+		if err := usecase.ImageRepository.Insert(ctx, &images); err != nil {
 			return err
 		}
 

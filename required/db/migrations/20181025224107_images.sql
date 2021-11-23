@@ -1,6 +1,5 @@
 
--- +goose Up
--- SQL in section 'Up' is executed when this migration is applied
+-- +migrate Up
 create table images
 (
   id         int unsigned auto_increment
@@ -12,7 +11,5 @@ create table images
   created_at datetime      not null
 );
 
--- +goose Down
--- SQL section 'Down' is executed when this migration is rolled back
+-- +migrate Down
 drop table images;
-

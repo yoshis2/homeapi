@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 //Mysql dbをmysqlにする場合はこれを使う
@@ -18,7 +18,7 @@ func NewMysql() *Mysql {
 }
 
 // GormConnect MySQL wrapper に接続
-func (mysql *Mysql) Open() *gorm.DB {
+func (mysqls *Mysql) Open() *gorm.DB {
 	host := os.Getenv("DB_HOST")
 	name := os.Getenv("DB_NAME")
 	user := os.Getenv("DB_USER")
@@ -27,7 +27,7 @@ func (mysql *Mysql) Open() *gorm.DB {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s", user, password, host, name, option)
 
-	db, err := gorm.Open("mysql", dsn)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

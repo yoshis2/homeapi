@@ -1,9 +1,10 @@
 package repository
 
 import (
+	"context"
 	"homeapi/domain"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type ImageRepository struct {
@@ -11,6 +12,6 @@ type ImageRepository struct {
 }
 
 // Insert 気温DBにデータを挿入
-func (repo *ImageRepository) Insert(image *domain.Images) error {
-	return repo.Database.Create(&image).Error
+func (repo *ImageRepository) Insert(ctx context.Context, image *domain.Images) error {
+	return repo.Database.WithContext(ctx).Create(&image).Error
 }

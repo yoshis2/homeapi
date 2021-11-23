@@ -5,7 +5,7 @@ import (
 	"homeapi/domain"
 	"homeapi/interfaces/repository"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 //go:generate mockgen -source=./temperature_repository.go -package=repositorymock -destination=./mock/temperature_repository.go

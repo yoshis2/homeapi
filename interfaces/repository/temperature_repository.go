@@ -4,7 +4,7 @@ import (
 	"context"
 	"homeapi/domain"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // TemperatureController 気温制御 Controller
