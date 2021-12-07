@@ -40,19 +40,23 @@ func main() {
 	var newTwitter ex_api.TwitterInterface
 
 	newDB = databases.NewMysql() //mysql
-	db := newDB.Open()
+	mysqlDb := newDB.Open()
+	db, err := mysqlDb.DB()
+	if err != nil {
+		panic(err)
+	}
 	defer db.Close()
-	db.LogMode(true)
-	db.SetLogger(&logging.GormLogger{Logging: newLogging})
+	// db.LogMode(true)
+	// db.SetLogger(&logging.GormLogger{Logging: newLogging})
 
 	newRedis = databases.NewRedis()
 	redisClient := newRedis.Open()
-	// defer redisClient.Close()
+	defer redisClient.Close()
 
 	newTwitter = ex_api.NewTwitter()
 	twitterClient := newTwitter.Open()
 
-	server.Run(db, redisClient, twitterClient, newLogging, validate)
+	server.Run(mysqlDb, redisClient, twitterClient, newLogging, validate)
 }
 
 func swaggerSet() {
