@@ -2,7 +2,7 @@
 
 ## 概要
 
-Go言語製のmigrationであるliask/gooseでテーブルを管理する。
+Go言語製のmigrationであるrubenv/sql-migrateでテーブルを管理する。
 
 ## 前提条件
 
@@ -13,25 +13,25 @@ MySQLが起動していること
 ### インストール
 
 ```bash
-go get github.com/liamstask/goose/cmd/goose
+go get -v github.com/rubenv/sql-migrate/...
 ```
 
 #### migration 実行するためのファイルを生成
 
 ```bash
-goose create ファイル名 sql
+sql-migrate create ファイル名 sql
 ```
 
 #### migration 実行
 
 ```bash
-goose up
+sql-migrate up
 ```
 
 #### 状態確認
 
 ```bash
-goose status
+sql-migrate status
 ```
 
 ## 例
@@ -40,25 +40,25 @@ goose status
 （すでに用意されているのでこの作業は不要）
 
 ```bash
-goose create create_payment_error_messages sql
+sql-migrate create create_payment_error_messages sql
 ```
 
 エラーメッセージテーブル作成を実行
 
 ```bash
-goose up
+sql-migrate up
 ```
 
 エラーメッセージテーブルが作成されたかどうか確認
 
 ```bash
-goose status
+sql-migrate status
 ```
 
 作成されていると以下のメッセージが出ます。
 
 ```shell
-goose: status for environment 'development'
+sql-migrate: status for environment 'development'
     Applied At                  Migration
     =======================================
     Wed Aug 15 07:23:32 2018 -- 20180815162246_create_payment_error_messages.sql

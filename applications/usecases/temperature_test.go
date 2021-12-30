@@ -15,16 +15,16 @@ import (
 )
 
 type serverMocks struct {
-	temperatureRepository *repositorymock.MockTemperatureRepository
+	temperatureRepository *repositorymock.MockThermometerRepository
 }
 
-func newMocks(ctrl *gomock.Controller) (*TemperatureUsecase, *serverMocks) {
+func newMocks(ctrl *gomock.Controller) (*ThermometerUsecase, *serverMocks) {
 	mocks := &serverMocks{
-		temperatureRepository: repositorymock.NewMockTemperatureRepository(ctrl),
+		temperatureRepository: repositorymock.NewMockThermometerRepository(ctrl),
 	}
 
-	temperatureUsecase := &TemperatureUsecase{
-		TemperatureRepository: mocks.temperatureRepository,
+	temperatureUsecase := &ThermometerUsecase{
+		ThermometerRepository: mocks.temperatureRepository,
 	}
 
 	return temperatureUsecase, mocks
@@ -39,16 +39,16 @@ func TestList(t *testing.T) {
 		temperatureUsecase, mocks := newMocks(ctrl)
 		temperature := []domain.Temperature{
 			{
-				ID:        12,
-				Temp:      "22",
-				Humi:      "61",
-				CreatedAt: nowTime,
+				ID:          12,
+				Temperature: "22",
+				Humidity:    "61",
+				CreatedAt:   nowTime,
 			},
 			{
-				ID:        13,
-				Temp:      "25",
-				Humi:      "63",
-				CreatedAt: nowTime,
+				ID:          13,
+				Temperature: "25",
+				Humidity:    "63",
+				CreatedAt:   nowTime,
 			},
 		}
 
@@ -58,16 +58,16 @@ func TestList(t *testing.T) {
 		if err != nil {
 			t.Errorf("error message : %v", err)
 		}
-		want := []ports.TemperatureOutputPort{
+		want := []ports.ThermometerOutputPort{
 			{
-				ID:   12,
-				Temp: "22",
-				Humi: "61",
+				ID:          12,
+				Temperature: "22",
+				Humidity:    "61",
 			},
 			{
-				ID:   13,
-				Temp: "25",
-				Humi: "63",
+				ID:          13,
+				Temperature: "25",
+				Humidity:    "63",
 			},
 		}
 		assert.Equal(t, &want, got)
@@ -87,9 +87,9 @@ func TestInsert(t *testing.T) {
 		temperatureUsecase, mocks := newMocks(ctrl)
 
 		temperature := &domain.Temperature{
-			Temp:      "20",
-			Humi:      "55",
-			CreatedAt: nowTime,
+			Temperature: "20",
+			Humidity:    "55",
+			CreatedAt:   nowTime,
 		}
 
 		dofunc := func(temperature *domain.Temperature) *domain.Temperature {
@@ -99,18 +99,18 @@ func TestInsert(t *testing.T) {
 
 		mocks.temperatureRepository.EXPECT().Insert(ctx, temperature).Do(dofunc).Return(nil)
 
-		request := &ports.TemperatureInputPort{
-			Temp: "20",
-			Humi: "55",
+		request := &ports.ThermometerInputPort{
+			Temperature: "20",
+			Humidity:    "55",
 		}
 
 		got, err := temperatureUsecase.Create(ctx, request)
 		require.NoError(t, err)
 
-		want := ports.TemperatureOutputPort{
-			ID:   71,
-			Temp: "20",
-			Humi: "55",
+		want := ports.ThermometerOutputPort{
+			ID:          71,
+			Temperature: "20",
+			Humidity:    "55",
 		}
 		assert.Equal(t, want, got)
 	})

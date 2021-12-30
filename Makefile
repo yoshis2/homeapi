@@ -10,6 +10,6 @@ clean:
 	docker rm `docker ps -a -q`
 	docker rmi `docker images -q`
 in:
-	docker-compose exec homeapi-app  sh
+	docker-compose exec homeapi-app sh
 test:
 	docker-compose exec homeapi-app go test ./...

@@ -2,7 +2,6 @@ package server
 
 import (
 	"homeapi/applications/logging"
-	"homeapi/infrastructure/databases"
 	"net/http/httptest"
 
 	"github.com/dghubble/go-twitter/twitter"
@@ -31,7 +30,7 @@ func (route *RoutingModuleTestSuite) SetupSuite() {
 	route.mockCtrl = gomock.NewController(route.T())
 
 	route.redisClient, _ = redismock.NewClientMock()
-	route.db, _, _ = databases.MySQLMock()
+	// route.db, _, _ = databases.MySQLMock()
 }
 
 func (route *RoutingModuleTestSuite) TestRun() {

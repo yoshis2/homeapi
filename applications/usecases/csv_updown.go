@@ -14,13 +14,13 @@ import (
 )
 
 type CsvUpdownUsecase struct {
-	TemperatureRepository repository.TemperatureRepository
+	ThermometerRepository repository.ThermometerRepository
 	Logging               logging.Logging
 	Validator             *validator.Validate
 }
 
 func (usecase *CsvUpdownUsecase) Download(ctx context.Context) ([][]string, error) {
-	temperatures, err := usecase.TemperatureRepository.List(ctx)
+	temperatures, err := usecase.ThermometerRepository.List(ctx)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err

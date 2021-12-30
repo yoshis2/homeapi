@@ -47,9 +47,9 @@ func Run(
 		v1.POST("/firestores", firestoreController.Create)
 
 		// 自宅の温度
-		temperatureController := api.NewTemperatureController(db, logging, validate)
-		v1.GET("/temperatures", temperatureController.List)
-		v1.POST("/temperatures", temperatureController.Create)
+		thermometerController := api.NewThermometerController(db, logging, validate)
+		v1.GET("/thermometers", thermometerController.List)
+		v1.POST("/thermometers", thermometerController.Create)
 
 		csvupdownController := api.NewCsvController(db, logging, validate)
 		v1.GET("/csv_updown", csvupdownController.Download)

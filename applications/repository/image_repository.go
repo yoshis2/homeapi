@@ -18,5 +18,5 @@ func NewImageRepository(db *gorm.DB) repository.ImageRepository {
 
 // ImageRepository Image Repository
 type ImageRepository interface {
-	Insert(ctx context.Context, image *domain.Images) error
+	Insert(ctx context.Context, image *domain.Image) error
 }

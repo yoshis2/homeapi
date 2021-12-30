@@ -21,12 +21,12 @@ type CsvUpdownController struct {
 
 // NewCsvController はnewコントローラー
 func NewCsvController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *CsvUpdownController {
-	repository := &repository.TemperatureRepository{
+	repository := &repository.ThermometerRepository{
 		Database: database,
 	}
 	return &CsvUpdownController{
 		Usecase: &usecases.CsvUpdownUsecase{
-			TemperatureRepository: repository,
+			ThermometerRepository: repository,
 			Logging:               logging,
 			Validator:             validate,
 		},
@@ -35,7 +35,7 @@ func NewCsvController(database *gorm.DB, logging logging.Logging, validate *vali
 
 // Download はDBの温度湿度データをCSVで出力するハンドラー
 // @Tags CSV 自宅の気温
-// Temperature godoc
+// Thermometer godoc
 // @Summary 家の温度と湿度のデータをデータベースからCSVで抽出する
 // @Description 欲しいタイミングで過去の温度を出力し、グラフにできるようにする
 // @Accept  json

@@ -12,31 +12,31 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockTemperatureRepository is a mock of TemperatureRepository interface.
-type MockTemperatureRepository struct {
+// MockThermometerRepository is a mock of ThermometerRepository interface.
+type MockThermometerRepository struct {
 	ctrl     *gomock.Controller
-	recorder *MockTemperatureRepositoryMockRecorder
+	recorder *MockThermometerRepositoryMockRecorder
 }
 
-// MockTemperatureRepositoryMockRecorder is the mock recorder for MockTemperatureRepository.
-type MockTemperatureRepositoryMockRecorder struct {
-	mock *MockTemperatureRepository
+// MockThermometerRepositoryMockRecorder is the mock recorder for MockThermometerRepository.
+type MockThermometerRepositoryMockRecorder struct {
+	mock *MockThermometerRepository
 }
 
-// NewMockTemperatureRepository creates a new mock instance.
-func NewMockTemperatureRepository(ctrl *gomock.Controller) *MockTemperatureRepository {
-	mock := &MockTemperatureRepository{ctrl: ctrl}
-	mock.recorder = &MockTemperatureRepositoryMockRecorder{mock}
+// NewMockThermometerRepository creates a new mock instance.
+func NewMockThermometerRepository(ctrl *gomock.Controller) *MockThermometerRepository {
+	mock := &MockThermometerRepository{ctrl: ctrl}
+	mock.recorder = &MockThermometerRepositoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockTemperatureRepository) EXPECT() *MockTemperatureRepositoryMockRecorder {
+func (m *MockThermometerRepository) EXPECT() *MockThermometerRepositoryMockRecorder {
 	return m.recorder
 }
 
 // Insert mocks base method.
-func (m *MockTemperatureRepository) Insert(ctx context.Context, temperature *domain.Temperature) error {
+func (m *MockThermometerRepository) Insert(ctx context.Context, temperature *domain.Temperature) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Insert", ctx, temperature)
 	ret0, _ := ret[0].(error)
@@ -44,13 +44,13 @@ func (m *MockTemperatureRepository) Insert(ctx context.Context, temperature *dom
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockTemperatureRepositoryMockRecorder) Insert(ctx, temperature interface{}) *gomock.Call {
+func (mr *MockThermometerRepositoryMockRecorder) Insert(ctx, temperature interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockTemperatureRepository)(nil).Insert), ctx, temperature)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockThermometerRepository)(nil).Insert), ctx, temperature)
 }
 
 // List mocks base method.
-func (m *MockTemperatureRepository) List(ctx context.Context) ([]domain.Temperature, error) {
+func (m *MockThermometerRepository) List(ctx context.Context) ([]domain.Temperature, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx)
 	ret0, _ := ret[0].([]domain.Temperature)
@@ -59,7 +59,7 @@ func (m *MockTemperatureRepository) List(ctx context.Context) ([]domain.Temperat
 }
 
 // List indicates an expected call of List.
-func (mr *MockTemperatureRepositoryMockRecorder) List(ctx interface{}) *gomock.Call {
+func (mr *MockThermometerRepositoryMockRecorder) List(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTemperatureRepository)(nil).List), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockThermometerRepository)(nil).List), ctx)
 }
