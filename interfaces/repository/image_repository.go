@@ -12,6 +12,6 @@ type ImageRepository struct {
 }
 
 // Insert 気温DBにデータを挿入
-func (repo *ImageRepository) Insert(ctx context.Context, image *domain.Images) error {
+func (repo *ImageRepository) Insert(ctx context.Context, image *domain.Image) error {
 	return repo.Database.WithContext(ctx).Create(&image).Error
 }

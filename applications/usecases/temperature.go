@@ -44,7 +44,7 @@ func (usecase *ThermometerUsecase) Create(ctx context.Context, input *ports.Ther
 		return nil, err
 	}
 
-	temperature := &domain.Temperature{
+	temperature := &domain.Thermometer{
 		Temperature: input.Temperature,
 		Humidity:    input.Humidity,
 		CreatedAt:   now,

@@ -26,7 +26,7 @@ func (usecase *CsvUpdownUsecase) Download(ctx context.Context) ([][]string, erro
 		return nil, err
 	}
 
-	var newTemperatures []domain.Temperature
+	var newTemperatures []domain.Thermometer
 	newTemperatures = append(newTemperatures, temperatures...)
 
 	return generateCSVRows(newTemperatures), nil

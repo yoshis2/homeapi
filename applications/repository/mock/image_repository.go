@@ -5,6 +5,7 @@
 package repositorymock
 
 import (
+	context "context"
 	domain "homeapi/domain"
 	reflect "reflect"
 
@@ -35,15 +36,15 @@ func (m *MockImageRepository) EXPECT() *MockImageRepositoryMockRecorder {
 }
 
 // Insert mocks base method.
-func (m *MockImageRepository) Insert(arg0 *domain.Images) error {
+func (m *MockImageRepository) Insert(ctx context.Context, image *domain.Image) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", arg0)
+	ret := m.ctrl.Call(m, "Insert", ctx, image)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockImageRepositoryMockRecorder) Insert(arg0 interface{}) *gomock.Call {
+func (mr *MockImageRepositoryMockRecorder) Insert(ctx, image interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockImageRepository)(nil).Insert), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockImageRepository)(nil).Insert), ctx, image)
 }

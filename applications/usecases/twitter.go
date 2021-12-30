@@ -51,7 +51,7 @@ func (usecase *TwitterUsecase) Get(ctx context.Context) error {
 	}
 
 	//tweet, res, err := client.Statuses.Update("ツイートする本文", nil)
-	_, _, err = usecase.TwitterClient.Statuses.Update(tweetContents.Message, nil)
+	_, _, err = usecase.TwitterClient.Statuses.Update(tweetContents.Tweet, nil)
 	if err != nil {
 		usecase.Logging.Error(err)
 		return err
@@ -86,7 +86,7 @@ func (usecase *TwitterUsecase) Create(ctx context.Context, input *ports.TwitterI
 	}
 
 	twitter := &domain.Twitter{
-		Message:   input.Message,
+		Tweet:     input.Tweet,
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
@@ -95,5 +95,5 @@ func (usecase *TwitterUsecase) Create(ctx context.Context, input *ports.TwitterI
 		usecase.Logging.Error(err)
 		return nil, err
 	}
-	return &ports.TwitterInputPort{Message: input.Message}, nil
+	return &ports.TwitterInputPort{Tweet: input.Tweet}, nil
 }

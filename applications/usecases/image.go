@@ -51,25 +51,25 @@ func ResizeImageList() []ImageSize {
 	return imageSizes
 }
 
-func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImagesInputPort) (*ports.ImagesOutputPort, error) {
+func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInputPort) (*ports.ImageOutputPort, error) {
 	now, err := util.JapaneseNowTime()
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
 	}
 
-	images := domain.Images{
-		ImageName: input.ImageName,
-		ImagePath: input.ImagePath,
+	images := domain.Image{
+		Name:      input.Name,
+		Path:      input.Path,
 		CreatedAt: now,
 	}
 
 	// ファイルタイプを取得
-	imageType := GetImageType(input.ImageData)
+	imageType := GetImageType(input.Data)
 	usecase.Logging.Info(fmt.Sprintf("イメージタイプ : %v", string(imageType)))
 
 	// base64をデコードファイルデータに変換
-	image, err := DecodeBase64Image(imageType, input.ImageData) //[]byte
+	image, err := DecodeBase64Image(imageType, input.Data) //[]byte
 	if err != nil {
 		usecase.Logging.Error(err)
 		return nil, err
@@ -81,7 +81,7 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImagesInp
 		}
 
 		// 画像をGorutineでアップロード
-		if err := ImageUploads(imageType, images.ImageName, image); err != nil {
+		if err := ImageUploads(imageType, images.Name, image); err != nil {
 			return err
 		}
 		return nil
@@ -90,9 +90,9 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImagesInp
 		return nil, err
 	}
 
-	output := &ports.ImagesOutputPort{
-		ImageName: images.ImageName,
-		ImagePath: images.ImagePath,
+	output := &ports.ImageOutputPort{
+		Name:      images.Name,
+		Path:      images.Path,
 		CreatedAt: images.CreatedAt,
 	}
 	return output, nil

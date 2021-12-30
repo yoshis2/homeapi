@@ -36,24 +36,24 @@ func (m *MockThermometerRepository) EXPECT() *MockThermometerRepositoryMockRecor
 }
 
 // Insert mocks base method.
-func (m *MockThermometerRepository) Insert(ctx context.Context, temperature *domain.Temperature) error {
+func (m *MockThermometerRepository) Insert(ctx context.Context, thermometer *domain.Thermometer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", ctx, temperature)
+	ret := m.ctrl.Call(m, "Insert", ctx, thermometer)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockThermometerRepositoryMockRecorder) Insert(ctx, temperature interface{}) *gomock.Call {
+func (mr *MockThermometerRepositoryMockRecorder) Insert(ctx, thermometer interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockThermometerRepository)(nil).Insert), ctx, temperature)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockThermometerRepository)(nil).Insert), ctx, thermometer)
 }
 
 // List mocks base method.
-func (m *MockThermometerRepository) List(ctx context.Context) ([]domain.Temperature, error) {
+func (m *MockThermometerRepository) List(ctx context.Context) ([]domain.Thermometer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx)
-	ret0, _ := ret[0].([]domain.Temperature)
+	ret0, _ := ret[0].([]domain.Thermometer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -54,8 +54,8 @@ func Run(
 		csvupdownController := api.NewCsvController(db, logging, validate)
 		v1.GET("/csv_updown", csvupdownController.Download)
 
-		imagesController := api.NewImagesController(db, logging, validate)
-		v1.POST("/images", imagesController.Upload)
+		imageController := api.NewImageController(db, logging, validate)
+		v1.POST("/images", imageController.Upload)
 
 		twitterController := api.NewTwitterController(db, redisClient, twitterClient, logging, validate)
 		v1.GET("/twitters", twitterController.Get)

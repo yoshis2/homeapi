@@ -19,5 +19,5 @@ func NewThermometerRepository(db *gorm.DB) repository.ThermometerRepository {
 // ThermometerRepository Temperature Repository
 type ThermometerRepository interface {
 	List(ctx context.Context) ([]domain.Thermometer, error)
-	Insert(ctx context.Context, temperature *domain.Thermometer) error
+	Insert(ctx context.Context, thermometer *domain.Thermometer) error
 }

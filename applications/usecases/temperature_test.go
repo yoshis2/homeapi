@@ -37,7 +37,7 @@ func TestList(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 		temperatureUsecase, mocks := newMocks(ctrl)
-		temperature := []domain.Temperature{
+		temperature := []domain.Thermometer{
 			{
 				ID:          12,
 				Temperature: "22",
@@ -86,13 +86,13 @@ func TestInsert(t *testing.T) {
 
 		temperatureUsecase, mocks := newMocks(ctrl)
 
-		temperature := &domain.Temperature{
+		temperature := &domain.Thermometer{
 			Temperature: "20",
 			Humidity:    "55",
 			CreatedAt:   nowTime,
 		}
 
-		dofunc := func(temperature *domain.Temperature) *domain.Temperature {
+		dofunc := func(temperature *domain.Thermometer) *domain.Thermometer {
 			temperature.ID = 71
 			return temperature
 		}

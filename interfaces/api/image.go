@@ -14,17 +14,17 @@ import (
 	"homeapi/interfaces/repository"
 )
 
-// ImagesController は画像アップロードコントローラー
-type ImagesController struct {
+// ImageController は画像アップロードコントローラー
+type ImageController struct {
 	Usecase *usecases.ImagesUsecase
 }
 
-// NewImagesController は画像アップロードコントローラー
-func NewImagesController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *ImagesController {
+// NewImageController は画像アップロードコントローラー
+func NewImageController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *ImageController {
 	repository := &repository.ImageRepository{
 		Database: database,
 	}
-	return &ImagesController{
+	return &ImageController{
 		Usecase: &usecases.ImagesUsecase{
 			ImageRepository: repository,
 			Database:        database,
@@ -41,15 +41,15 @@ func NewImagesController(database *gorm.DB, logging logging.Logging, validate *v
 // @Description 画像データをGorutineを使って複数並列アップロードする
 // @Accept  json
 // @Produce  json
-// @Param image body ports.ImagesInputPort true "画像情報"
-// @Success 200 {object} ports.ImagesOutputPort
+// @Param image body ports.ImageInputPort true "画像情報"
+// @Success 200 {object} ports.ImageOutputPort
 // @Failure 400 {object} interfaces.ErrorResponseObject
 // @Failure 404 {object} interfaces.ErrorResponseObject
 // @Failure 500 {object} interfaces.ErrorResponseObject
 // @Router /images [post]
-func (controller *ImagesController) Upload(c echo.Context) error {
+func (controller *ImageController) Upload(c echo.Context) error {
 	ctx := c.Request().Context()
-	var input ports.ImagesInputPort
+	var input ports.ImageInputPort
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, interfaces.ErrorResponseObject{
 			Message: err.Error(),

@@ -2,14 +2,14 @@ package ports
 
 import "time"
 
-type ImagesInputPort struct {
-	ImageName string `json:"image_name" validate:"required" example:"small phone"`
-	ImagePath string `json:"image_path" validate:"required" example:"/var/www/html"`
-	ImageData string `json:"image_data" validate:"required" example:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAM2CAMAAACKYKqqAAAABGdBTUEAALGPC..."`
+type ImageInputPort struct {
+	Name string `json:"name" validate:"required" example:"small phone"`
+	Path string `json:"path" validate:"required" example:"/var/www/html"`
+	Data string `json:"data" validate:"required" example:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhwAAAM2CAMAAACKYKqqAAAABGdBTUEAALGPC..."`
 }
 
-type ImagesOutputPort struct {
-	ImageName string    `json:"image_name"`
-	ImagePath string    `json:"image_path"`
+type ImageOutputPort struct {
+	Name      string    `json:"name"`
+	Path      string    `json:"path"`
 	CreatedAt time.Time `json:"created_at"`
 }
