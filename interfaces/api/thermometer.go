@@ -44,7 +44,7 @@ func NewThermometerController(db *gorm.DB, logging logging.Logging, validate *va
 // @Failure 400 {object} interfaces.ErrorResponseObject
 // @Failure 404 {object} interfaces.ErrorResponseObject
 // @Failure 500 {object} interfaces.ErrorResponseObject
-// @Router /temperatures [get]
+// @Router /thermometers [get]
 func (controller *ThermometerController) List(c echo.Context) error {
 	ctx := c.Request().Context()
 	output, err := controller.Usecase.List(ctx)
@@ -61,12 +61,12 @@ func (controller *ThermometerController) List(c echo.Context) error {
 // @Description １時間ごとに家の温度と湿度をデータベースに格納する
 // @Accept  json
 // @Produce  json
-// @Param temperature body ports.ThermometerInputPort true "温度湿度情報"
+// @Param thermometer body ports.ThermometerInputPort true "温度湿度情報"
 // @Success 200 {object} ports.ThermometerOutputPort
 // @Failure 400 {object} interfaces.ErrorResponseObject
 // @Failure 404 {object} interfaces.ErrorResponseObject
 // @Failure 500 {object} interfaces.ErrorResponseObject
-// @Router /temperatures [post]
+// @Router /thermometers [post]
 func (controller *ThermometerController) Create(c echo.Context) error {
 	ctx := c.Request().Context()
 	var input ports.ThermometerInputPort
