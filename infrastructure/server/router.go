@@ -49,10 +49,8 @@ func Run(
 		// 自宅の温度
 		thermometerController := api.NewThermometerController(db, logging, validate)
 		v1.GET("/thermometers", thermometerController.List)
+		v1.GET("/thermometercsv", thermometerController.Download)
 		v1.POST("/thermometers", thermometerController.Create)
-
-		csvupdownController := api.NewCsvController(db, logging, validate)
-		v1.GET("/csv_updown", csvupdownController.Download)
 
 		imageController := api.NewImageController(db, logging, validate)
 		v1.POST("/images", imageController.Upload)

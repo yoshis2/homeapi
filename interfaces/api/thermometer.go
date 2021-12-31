@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/csv"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -85,4 +86,40 @@ func (controller *ThermometerController) Create(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, output)
+}
+
+// Download はDBの温度湿度データをCSVで出力するハンドラー
+// @Tags 自宅の気温
+// Thermometer godoc
+// @Summary 家の温度と湿度のデータをデータベースからCSVで抽出する
+// @Description 欲しいタイミングで過去の温度を出力し、グラフにできるようにする
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} ok
+// @Failure 400 {object} interfaces.ErrorResponseObject
+// @Failure 404 {object} interfaces.ErrorResponseObject
+// @Failure 500 {object} interfaces.ErrorResponseObject
+// @Router /thermometercsv [get]
+func (controller *ThermometerController) Download(c echo.Context) error {
+	ctx := c.Request().Context()
+	generateTemperatures, err := controller.Usecase.Download(ctx)
+	if err != nil {
+		return c.JSON(interfaces.ErrorResponse(err))
+	}
+
+	response := c.Response()
+	header := response.Header()
+	header.Set(echo.HeaderContentType, echo.MIMEOctetStream)
+	header.Set(echo.HeaderContentDisposition, "attachment; filename="+"temperature"+".csv")
+	header.Set("Content-Transfer-Encoding", "binary")
+	header.Set("Expires", "0")
+	response.WriteHeader(http.StatusOK)
+
+	writerTemperature := csv.NewWriter(response)
+	for _, generateTemperature := range generateTemperatures {
+		writerTemperature.Write(generateTemperature)
+	}
+	writerTemperature.Flush()
+
+	return c.JSON(http.StatusOK, "ok")
 }
