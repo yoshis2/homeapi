@@ -46,7 +46,8 @@ sql-migrate create create_payment_error_messages sql
 エラーメッセージテーブル作成を実行
 
 ```bash
-sql-migrate up
+sql-migrate up # 開発環境
+sql-migrate up -env="production" #本番環境
 ```
 
 エラーメッセージテーブルが作成されたかどうか確認

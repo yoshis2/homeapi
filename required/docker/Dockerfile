@@ -1,11 +1,11 @@
-FROM golang:alpine
+FROM golang:1.17-alpine
 ENV GOBIN /go/bin
 
 # フォルダ構成をGoPathの通りに設置
 WORKDIR /go/src/homeapi
 
-RUN apk update && apk upgrade && \
-    apk add bash gcc musl-dev git
+RUN apk update && apk upgrade
+RUN apk add bash gcc musl-dev git
 
 RUN go get -u github.com/mattn/go-sqlite3 && \
     go get -v github.com/rubenv/sql-migrate/...

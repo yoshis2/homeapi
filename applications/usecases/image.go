@@ -58,7 +58,7 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 		return nil, err
 	}
 
-	images := domain.Image{
+	imageInfo := domain.Image{
 		Name:      input.Name,
 		Path:      input.Path,
 		CreatedAt: now,
@@ -76,12 +76,12 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 	}
 
 	if err := applications.Transaction(usecase.Database, func(tx *gorm.DB) error {
-		if err := usecase.ImageRepository.Insert(ctx, &images); err != nil {
+		if err := usecase.ImageRepository.Insert(ctx, &imageInfo); err != nil {
 			return err
 		}
 
 		// 画像をGorutineでアップロード
-		if err := ImageUploads(imageType, images.Name, image); err != nil {
+		if err := ImageUploads(imageType, imageInfo.Name, image); err != nil {
 			return err
 		}
 		return nil
@@ -91,9 +91,9 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 	}
 
 	output := &ports.ImageOutputPort{
-		Name:      images.Name,
-		Path:      images.Path,
-		CreatedAt: images.CreatedAt,
+		Name:      imageInfo.Name,
+		Path:      imageInfo.Path,
+		CreatedAt: imageInfo.CreatedAt,
 	}
 	return output, nil
 }

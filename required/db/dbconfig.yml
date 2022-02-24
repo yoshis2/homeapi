@@ -7,4 +7,5 @@ development:
 production:
     dialect: mysql
     dir: migrations
-    datasource: homeapi:Diamond_0129@tcp(153.122.115.85)/homeapi
+    datasource: homeapi:Diamond_0129@tcp(153.122.115.85)/homeapi?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+    
