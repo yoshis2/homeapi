@@ -14,7 +14,9 @@ services:
       - "1323:1323"
       - "5050:5050" #delve用のポート
     privileged: true # Delveで必要なので付与します。セキュリティ面から本番環境では使うべきではありません。
-    command: required/docker/startup.sh
+    command: >
+      bash -c "chmod +x required/docker/startup.sh && 
+      required/docker/startup.sh"
     security_opt:
       - apparmor:unconfined
     cap_add:

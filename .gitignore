@@ -19,6 +19,8 @@ img/*
 # SSL証明書情報
 .well-known
 
+vendor
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
