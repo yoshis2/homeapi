@@ -24,6 +24,10 @@ clean:
 in:
 	docker-compose exec homeapi-app sh
 
+.PHONY: tidy
+tidy:
+	docker-compose exec homeapi-app go mod tidy
+
 .PHONY: force-in
 force-in:
 	docker-compose run homeapi-app sh
