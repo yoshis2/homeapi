@@ -53,7 +53,7 @@ make serve
 
 ### 機能
 
-- 部屋の温度を一定の時間で取得しデータを収集する。
+- 部屋の温度を一定の時間でRaspberryPiから取得しデータを収集する。
 - MySQLからTwitterのつぶやき
 - Firebase Firestoreへの参照、更新、追加、削除機能
 
@@ -67,7 +67,7 @@ https://www.seldnext.com/swagger/index.html
 
 ## 開発環境
 
-- Go バージョン  1.14
+- Go バージョン  1.22
 - Docker環境
 - MySQL8
 - Redis
@@ -79,7 +79,7 @@ https://www.seldnext.com/swagger/index.html
 
 ```shell
 make in
-cd required
+cd required/db
 sql-migrate create createTwitters
 sql-migrate up
 ```
@@ -88,7 +88,7 @@ sql-migrate up
 
 ```shell
 make in
-cd required
+cd required/db
 sql-migrate new -env="production" create_users
 sql-migrate up -env="production"
 ```
