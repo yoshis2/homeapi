@@ -1,6 +1,8 @@
 .PHONY: build
 build:
 	docker-compose build
+	docker-compose run homeapi-app go mod tidy
+	docker-compose run homeapi-app go mod vendor
 
 .PHONY: serve
 serve:
@@ -27,6 +29,12 @@ in:
 .PHONY: tidy
 tidy:
 	docker-compose exec homeapi-app go mod tidy
+	docker-compose exec homeapi-app go mod vendor
+
+.PHONY: build-tidy
+build-tidy:
+	docker-compose run homeapi-app go mod tidy
+	docker-compose run homeapi-app go mod vendor
 
 .PHONY: force-in
 force-in:

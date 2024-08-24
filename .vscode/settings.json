@@ -1,3 +1,6 @@
 {
-    "nuxt.isNuxtApp": false
+  "go.formatTool": "goimports",
+  "editor.defaultFormatter": "golang.go",
+  "eslint.format.enable": true,
+  "docker.languageserver.formatter.ignoreMultilineInstructions": true
 }

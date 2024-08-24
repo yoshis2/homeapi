@@ -14,7 +14,6 @@ require (
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-redis/redismock/v8 v8.11.5
-	github.com/golang/mock v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
@@ -23,6 +22,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/echo-swagger v1.4.1
 	github.com/swaggo/swag v1.16.3
+	go.uber.org/mock v0.4.0
 	golang.org/x/sync v0.7.0
 	google.golang.org/api v0.177.0
 	gorm.io/driver/mysql v1.5.6

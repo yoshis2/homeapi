@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/go-playground/assert/v2"
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/mock/gomock"
 )
 
 type serverMocks struct {

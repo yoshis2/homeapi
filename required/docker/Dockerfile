@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine
+FROM golang:1.23-alpine
 ENV GOBIN /go/bin
 
 # フォルダ構成をGoPathの通りに設置
@@ -13,7 +13,7 @@ RUN go get -u github.com/mattn/go-sqlite3 && \
     go get -u github.com/labstack/echo/v4
 
 RUN go install github.com/joho/godotenv/cmd/godotenv@latest && \
-    go install github.com/golang/mock/mockgen@latest && \
+    go install go.uber.org/mock/mockgen@latest && \
     go install github.com/go-delve/delve/cmd/dlv@latest && \
     go install github.com/pilu/fresh@latest && \
     go install github.com/rubenv/sql-migrate/...@latest && \

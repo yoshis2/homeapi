@@ -38,7 +38,7 @@ type ImageSize struct {
 	MaxHeight uint
 }
 
-//ResizeImageList go2goのファイルアップロードで作成するサイズの配列
+// ResizeImageList go2goのファイルアップロードで作成するサイズの配列
 func ResizeImageList() []ImageSize {
 	var imageSizes []ImageSize
 
@@ -98,7 +98,7 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 	return output, nil
 }
 
-//DecodeBase64ImageStr Base64でエンコードされたImageの文字列からcontentTypeを抜いてDecodeする
+// DecodeBase64ImageStr Base64でエンコードされたImageの文字列からcontentTypeを抜いてDecodeする
 func DecodeBase64Image(imageType, base64ImageStr string) (image.Image, error) {
 	coI := strings.Index(base64ImageStr, ",")
 	rawImage := base64ImageStr[coI+1:]

@@ -55,6 +55,9 @@ func Run(
 		imageController := api.NewImageController(db, logging, validate)
 		v1.POST("/images", imageController.Upload)
 
+		// walletController := api.NewNftWalletController(logging, validate)
+		// v1.POST("wallets", walletController)
+
 		twitterController := api.NewTwitterController(db, redisClient, twitterClient, logging, validate)
 		v1.GET("/twitters", twitterController.Get)
 		v1.POST("/twitters", twitterController.Create)

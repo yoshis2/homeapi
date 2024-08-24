@@ -3,24 +3,24 @@ package repository
 import (
 	"context"
 	"homeapi/domain"
+	"log"
 	"regexp"
 	"testing"
 	"time"
 
 	"homeapi/infrastructure/databases"
 
+	"github.com/stretchr/testify/assert" // 追加
+
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestTemperatureList(t *testing.T) {
 	ctx := context.Background()
-	db, mock, err := databases.MySQLMock()
+	db, mock, err := databases.GormMock()
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer db.Close()
-	db.LogMode(true)
 
 	repo := ThermometerRepository{
 		Database: db,
@@ -28,22 +28,23 @@ func TestTemperatureList(t *testing.T) {
 
 	nowTime := time.Now()
 
-	room1 := &domain.Temperature{
+	room1 := &domain.Thermometer{
 		ID:          3,
 		Temperature: "22.5",
 		Humidity:    "76",
 		CreatedAt:   nowTime,
 	}
 
-	room2 := &domain.Temperature{
+	room2 := &domain.Thermometer{
 		ID:          4,
 		Temperature: "11.8",
 		Humidity:    "60",
 		CreatedAt:   nowTime,
 	}
 
-	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `temperatures` ORDER BY created_at desc LIMIT 200")).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "temp", "humi", "created_at"}).
+	mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `thermometers` ORDER BY created_at desc LIMIT ?")).
+		WithArgs(200).
+		WillReturnRows(sqlmock.NewRows([]string{"id", "temperature", "humidity", "created_at"}).
 			AddRow(room1.ID, room1.Temperature, room1.Humidity, room1.CreatedAt).
 			AddRow(4, "11.8", "60", nowTime),
 		)
@@ -53,6 +54,8 @@ func TestTemperatureList(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	log.Println(res)
+
 	assert.Equal(t, &res[0], room1)
 	assert.Equal(t, &res[1], room2)
 
@@ -60,12 +63,10 @@ func TestTemperatureList(t *testing.T) {
 
 func TemperatureInsert(t *testing.T) {
 	ctx := context.Background()
-	db, mock, err := databases.MySQLMock()
+	db, mock, err := databases.GormMock()
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer db.Close()
-	db.LogMode(true)
 
 	repo := ThermometerRepository{
 		Database: db,
@@ -73,7 +74,7 @@ func TemperatureInsert(t *testing.T) {
 
 	nowTime := time.Now()
 
-	room1 := &domain.Temperature{
+	room1 := &domain.Thermometer{
 		ID:          3,
 		Temperature: "22.5",
 		Humidity:    "76",

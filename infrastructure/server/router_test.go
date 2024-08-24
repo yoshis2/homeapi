@@ -9,8 +9,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-redis/redismock/v8"
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
+	"go.uber.org/mock/gomock"
 	"gorm.io/gorm"
 )
 
@@ -30,7 +30,7 @@ func (route *RoutingModuleTestSuite) SetupSuite() {
 	route.mockCtrl = gomock.NewController(route.T())
 
 	route.redisClient, _ = redismock.NewClientMock()
-	// route.db, _, _ = databases.MySQLMock()
+	// route.db, _, _ = databases.GormMock()
 }
 
 func (route *RoutingModuleTestSuite) TestRun() {

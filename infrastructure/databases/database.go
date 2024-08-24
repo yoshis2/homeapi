@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//DB DBのインターフェース
+// DB DBのインターフェース
 type DatabaseInterface interface {
 	Open() *gorm.DB
 }

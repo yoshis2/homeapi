@@ -2,12 +2,10 @@ package usecases
 
 import (
 	repositorymock "homeapi/applications/repository/mock"
-	"homeapi/applications/util"
-	"homeapi/domain"
 	"log"
 	"testing"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 )
 
 type serverImageMocks struct {
@@ -28,22 +26,24 @@ func newServerImageMocks(ctrl *gomock.Controller) (*ImagesUsecase, *serverImageM
 
 func TestImageInsert(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		nowTime, err := util.JapaneseNowTime()
-		if err != nil {
-			t.Error(err)
-		}
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
 		_, mocks := newServerImageMocks(ctrl)
-		image := &domain.Images{
-			ImageName: "マーティン",
-			ImagePath: "/var/www/html",
-			CreatedAt: nowTime,
-		}
+		log.Printf(" : %v ", mocks)
 
-		log.Printf(" : %v : %v", mocks, image)
-		mocks.imageRepository.EXPECT().Insert(image).AnyTimes().Return(nil)
+		// nowTime, err := util.JapaneseNowTime()
+		// if err != nil {
+		// 	t.Error(err)
+		// }
+
+		// image := &domain.Image{
+		// 	Name:      "マーティン",
+		// 	Path:      "/var/www/html",
+		// 	CreatedAt: nowTime,
+		// }
+
+		// mocks.imageRepository.EXPECT().Insert(image).AnyTimes().Return(nil)
 
 		// request := &ports.ImagesInputPort{
 		// 	ImageName: "マーティン",
