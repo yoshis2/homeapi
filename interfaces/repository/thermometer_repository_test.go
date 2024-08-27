@@ -10,9 +10,8 @@ import (
 
 	"homeapi/infrastructure/databases"
 
-	"github.com/stretchr/testify/assert" // 追加
-
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTemperatureList(t *testing.T) {
@@ -58,7 +57,6 @@ func TestTemperatureList(t *testing.T) {
 
 	assert.Equal(t, &res[0], room1)
 	assert.Equal(t, &res[1], room2)
-
 }
 
 func TemperatureInsert(t *testing.T) {

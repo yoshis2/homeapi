@@ -34,6 +34,28 @@ func NewImageController(database *gorm.DB, logging logging.Logging, validate *va
 	}
 }
 
+// List はDBにある画像のデータを出力する
+// @Tags images Gorutine
+// Thermometer godoc
+// @Summary アップロードした画像を出力
+// @Description アップロードした画像のデータを順に出力する
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} []ports.ImageOutputPort
+// @Failure 400 {object} interfaces.ErrorResponseObject
+// @Failure 404 {object} interfaces.ErrorResponseObject
+// @Failure 500 {object} interfaces.ErrorResponseObject
+// @Router /images [get]
+func (controller *ImageController) List(c echo.Context) error {
+	ctx := c.Request().Context()
+	output, err := controller.Usecase.List(ctx)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, output)
+}
+
 // Upload は画像データをGorutineを使って複数並列アップロードするハンドラー
 // @Tags images Gorutine
 // Image godoc

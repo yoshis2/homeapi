@@ -3,6 +3,7 @@ package server
 import (
 	"homeapi/applications/logging"
 	"net/http/httptest"
+	"testing"
 
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/gavv/httpexpect"
@@ -26,11 +27,13 @@ type RoutingModuleTestSuite struct {
 	mockCtrl      *gomock.Controller
 }
 
-func (route *RoutingModuleTestSuite) SetupSuite() {
+func (route *RoutingModuleTestSuite) SetupSuite(t *testing.T) {
 	route.mockCtrl = gomock.NewController(route.T())
 
 	route.redisClient, _ = redismock.NewClientMock()
 	// route.db, _, _ = databases.GormMock()
+
+	suite.Run(t, new(RoutingModuleTestSuite))
 }
 
 func (route *RoutingModuleTestSuite) TestRun() {

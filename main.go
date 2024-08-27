@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 
 	"homeapi/docs"
@@ -12,7 +10,6 @@ import (
 	"homeapi/infrastructure/server"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/joho/godotenv"
 )
 
 // @contact.name スリーネクスト　サポート
@@ -25,9 +22,6 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	if err := godotenv.Load(fmt.Sprintf("infrastructure/config/%s.env", os.Getenv("GO_ENV"))); err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	validate := validator.New()
 	newLogging := logging.NewLogrusLogging() // Logrus
 	//newLogging := logging.NewStackdriverLogging() // stack driver

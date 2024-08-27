@@ -16,6 +16,8 @@ docs/swagger.yaml
 
 img/*
 
+develop.env
+
 # SSL証明書情報
 .well-known
 

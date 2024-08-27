@@ -92,9 +92,11 @@ func TestInsert(t *testing.T) {
 			CreatedAt:   nowTime,
 		}
 
-		dofunc := func(temperature *domain.Thermometer) *domain.Thermometer {
+		dofunc := func(ctx context.Context, temperature *domain.Thermometer) (context.Context, *domain.Thermometer) {
 			temperature.ID = 71
-			return temperature
+			temperature.Temperature = "20"
+			temperature.Humidity = "55"
+			return ctx, temperature
 		}
 
 		mocks.temperatureRepository.EXPECT().Insert(ctx, temperature).Do(dofunc).Return(nil)

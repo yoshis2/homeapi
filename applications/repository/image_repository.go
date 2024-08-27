@@ -8,8 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//go:generate mockgen -source=./image_repository.go -package=repositorymock -destination=./mock/image_repository.go
-
+//go:generate mockgen -package mock -source $GOFILE -destination mock/$GOFILE
 func NewImageRepository(db *gorm.DB) repository.ImageRepository {
 	return repository.ImageRepository{
 		Database: db,
@@ -18,5 +17,6 @@ func NewImageRepository(db *gorm.DB) repository.ImageRepository {
 
 // ImageRepository Image Repository
 type ImageRepository interface {
+	List(ctx context.Context) ([]domain.Image, error)
 	Insert(ctx context.Context, image *domain.Image) error
 }

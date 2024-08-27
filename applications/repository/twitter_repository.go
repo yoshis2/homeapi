@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockgen -package mock -source $GOFILE -destination mock/$GOFILE
 func NewTwitterRepository(db *gorm.DB) repository.TwitterRepository {
 	return repository.TwitterRepository{
 		Database: db,

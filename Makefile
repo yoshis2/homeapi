@@ -4,9 +4,15 @@ build:
 	docker-compose run homeapi-app go mod tidy
 	docker-compose run homeapi-app go mod vendor
 
-.PHONY: serve
-serve:
-	docker-compose up
+.PHONY: tidy
+tidy:
+	docker-compose exec homeapi-app go mod tidy
+	docker-compose exec homeapi-app go mod vendor
+
+.PHONY: build-tidy
+build-tidy:
+	docker-compose run homeapi-app go mod tidy
+	docker-compose run homeapi-app go mod vendor
 
 .PHONY: swag
 swag:
@@ -22,19 +28,13 @@ clean:
 	docker rmi `docker images -q`
 	docker image prune
 
+.PHONY: serve
+serve:
+	docker-compose up
+
 .PHONY: in
 in:
 	docker-compose exec homeapi-app sh
-
-.PHONY: tidy
-tidy:
-	docker-compose exec homeapi-app go mod tidy
-	docker-compose exec homeapi-app go mod vendor
-
-.PHONY: build-tidy
-build-tidy:
-	docker-compose run homeapi-app go mod tidy
-	docker-compose run homeapi-app go mod vendor
 
 .PHONY: force-in
 force-in:

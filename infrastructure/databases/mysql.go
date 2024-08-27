@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-//Mysql dbをmysqlにする場合はこれを使う
+// Mysql dbをmysqlにする場合はこれを使う
 type Mysql struct {
 }
 
-//NewMysql New Mysql
+// NewMysql New Mysql
 func NewMysql() *Mysql {
 	return &Mysql{}
 }
@@ -20,9 +20,9 @@ func NewMysql() *Mysql {
 // GormConnect MySQL wrapper に接続
 func (mysqls *Mysql) Open() *gorm.DB {
 	host := os.Getenv("DB_HOST")
-	name := os.Getenv("DB_NAME")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASS")
+	name := os.Getenv("MYSQL_DATABASE")
+	user := os.Getenv("MYSQL_USER")
+	password := os.Getenv("MYSQL_PASSWORD")
 	option := "charset=utf8mb4&parseTime=True&loc=Local"
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s", user, password, host, name, option)

@@ -8,14 +8,9 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
+	"log"
 	"os"
 	"strings"
-
-	"github.com/go-playground/validator/v10"
-	"github.com/nfnt/resize"
-	"github.com/pkg/errors"
-	"golang.org/x/sync/errgroup"
-	"gorm.io/gorm"
 
 	"homeapi/applications"
 	"homeapi/applications/logging"
@@ -23,6 +18,12 @@ import (
 	"homeapi/applications/repository"
 	"homeapi/applications/util"
 	"homeapi/domain"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/nfnt/resize"
+	"github.com/pkg/errors"
+	"golang.org/x/sync/errgroup"
+	"gorm.io/gorm"
 )
 
 type ImagesUsecase struct {
@@ -38,7 +39,7 @@ type ImageSize struct {
 	MaxHeight uint
 }
 
-// ResizeImageList go2goのファイルアップロードで作成するサイズの配列
+// ResizeImageList ファイルアップロードで作成するサイズの配列
 func ResizeImageList() []ImageSize {
 	var imageSizes []ImageSize
 
@@ -49,6 +50,10 @@ func ResizeImageList() []ImageSize {
 	imageSizes = append(imageSizes, ImageSize{1920, 1080})
 
 	return imageSizes
+}
+
+func (usecase *ImagesUsecase) List(ctx context.Context) (*ports.ImageOutputPort, error) {
+	return nil, nil
 }
 
 func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInputPort) (*ports.ImageOutputPort, error) {
@@ -64,9 +69,11 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 		CreatedAt: now,
 	}
 
+	log.Printf("イメージ情報 : %v", imageInfo)
+
 	// ファイルタイプを取得
 	imageType := GetImageType(input.Data)
-	usecase.Logging.Info(fmt.Sprintf("イメージタイプ : %v", string(imageType)))
+	// usecase.Logging.Info(fmt.Sprintf("イメージタイプ : %v", string(imageType)))
 
 	// base64をデコードファイルデータに変換
 	image, err := DecodeBase64Image(imageType, input.Data) //[]byte
@@ -75,17 +82,21 @@ func (usecase *ImagesUsecase) Upload(ctx context.Context, input *ports.ImageInpu
 		return nil, err
 	}
 
+	log.Println("トランザクションスタート")
 	if err := applications.Transaction(usecase.Database, func(tx *gorm.DB) error {
 		if err := usecase.ImageRepository.Insert(ctx, &imageInfo); err != nil {
+			log.Println("トランザクションエラーの中を通過しました")
 			return err
 		}
 
 		// 画像をGorutineでアップロード
 		if err := ImageUploads(imageType, imageInfo.Name, image); err != nil {
+			log.Println("アップロードトランザクションエラーの中を通過しました")
 			return err
 		}
 		return nil
 	}); err != nil {
+		log.Println("通過したぜよ5")
 		usecase.Logging.Error(err)
 		return nil, err
 	}
@@ -139,7 +150,7 @@ func ImageUploads(imageType, imageName string, image image.Image) error {
 			// 複数サイズにリサイズ(Go Routine)
 			m := resize.Thumbnail(size.MaxWidth, size.MaxHeight, image, resize.Lanczos3)
 
-			out, err := os.Create(fmt.Sprintf("img/%s_%d_%d.%s", imageName, size.MaxWidth, size.MaxHeight, imageType))
+			out, err := os.Create(fmt.Sprintf("img/%s/%d_%d.%s", imageName, size.MaxWidth, size.MaxHeight, imageType))
 			if err != nil {
 				return err
 			}

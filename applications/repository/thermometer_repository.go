@@ -8,8 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//go:generate mockgen -source=./thermometer_repository.go -package=repositorymock -destination=./mock/thermometer_repository.go
-
+//go:generate mockgen -package mock -source $GOFILE -destination mock/$GOFILE
 func NewThermometerRepository(db *gorm.DB) repository.ThermometerRepository {
 	return repository.ThermometerRepository{
 		Database: db,
