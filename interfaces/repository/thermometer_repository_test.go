@@ -2,12 +2,12 @@ package repository
 
 import (
 	"context"
-	"homeapi/domain"
 	"log"
 	"regexp"
 	"testing"
 	"time"
 
+	"homeapi/domain"
 	"homeapi/infrastructure/databases"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -60,23 +60,17 @@ func TestTemperatureList(t *testing.T) {
 }
 
 func TemperatureInsert(t *testing.T) {
-	ctx := context.Background()
-	db, mock, err := databases.GormMock()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	repo := ThermometerRepository{
-		Database: db,
-	}
-
 	nowTime := time.Now()
-
 	room1 := &domain.Thermometer{
 		ID:          3,
 		Temperature: "22.5",
 		Humidity:    "76",
 		CreatedAt:   nowTime,
+	}
+
+	db, mock, err := databases.GormMock()
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	insertTemperature := regexp.QuoteMeta(`INSERT INTO "temperatures" ("id","temp", "humi", "created_at") VALUES ($1, $2, $3, $4)`)
@@ -87,9 +81,13 @@ func TemperatureInsert(t *testing.T) {
 				AddRow(room1.ID, room1.Temperature, room1.Humidity, room1.CreatedAt),
 		)
 
+	ctx := context.Background()
+	repo := ThermometerRepository{
+		Database: db,
+	}
+
 	// 実行
-	err = repo.Insert(ctx, room1)
-	if err != nil {
+	if err := repo.Insert(ctx, room1); err != nil {
 		t.Fatal(err)
 	}
 }
