@@ -34,7 +34,7 @@ func NewFirestoreController(logging logging.Logging, validate *validator.Validat
 
 // List はfirestoreから登録したデータを取得する
 // @Tags Firebase firestore
-// Thermometer godoc
+// FireStore godoc
 // @Summary firebaseで登録したデータを取得する
 // @Description firebaseで登録したデータを取得する
 // @Accept  json
@@ -55,7 +55,7 @@ func (controller *FirestoreConnectController) List(c echo.Context) error {
 
 // Create はDBにFirestoreにデータを登録するハンドラー
 // @Tags Firebase firestore
-// Thermometer godoc
+// FireStore godoc
 // @Summary firestoreの登録テスト用
 // @Description FirebaseのFirestoreの登録接続をする
 // @Accept  json

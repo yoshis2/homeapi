@@ -1,7 +1,7 @@
 #  設定フィアルFirebaseやTwitter情報含む
 infrastructure/config/develop.env
 infrastructure/config/production.env
-infrastructure/config/service-account-key.json
+infrastructure/config/firebase-adminsdk.json
 
 # ログ出力
 required/db-data

@@ -1,26 +1,26 @@
 .PHONY: build
 build:
-	docker-compose build
-	docker-compose run homeapi-app go mod tidy
-	docker-compose run homeapi-app go mod vendor
+	docker compose build
+	docker compose run homeapi-app go mod tidy
+	docker compose run homeapi-app go mod vendor
 
 .PHONY: tidy
 tidy:
-	docker-compose exec homeapi-app go mod tidy
-	docker-compose exec homeapi-app go mod vendor
+	docker compose exec homeapi-app go mod tidy
+	docker compose exec homeapi-app go mod vendor
 
 .PHONY: build-tidy
 build-tidy:
-	docker-compose run homeapi-app go mod tidy
-	docker-compose run homeapi-app go mod vendor
+	docker compose run homeapi-app go mod tidy
+	docker compose run homeapi-app go mod vendor
 
 .PHONY: swag
 swag:
-	docker-compose exec homeapi-app swag init
+	docker compose exec homeapi-app swag init
 
 .PHONY: generate
 generate:
-	docker-compose exec homeapi-app go generate ./...
+	docker compose exec homeapi-app go generate ./...
 
 .PHONY: clean
 clean:
@@ -30,16 +30,16 @@ clean:
 
 .PHONY: serve
 serve:
-	docker-compose up
+	docker compose up
 
 .PHONY: in
 in:
-	docker-compose exec homeapi-app sh
+	docker compose exec homeapi-app sh
 
 .PHONY: force-in
 force-in:
-	docker-compose run homeapi-app sh
+	docker compose run --rm homeapi-app sh
 
 .PHONY: test
 test:
-	docker-compose exec homeapi-app go test ./...
+	docker compose exec homeapi-app go test ./...

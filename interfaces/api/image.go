@@ -21,9 +21,7 @@ type ImageController struct {
 
 // NewImageController は画像アップロードコントローラー
 func NewImageController(database *gorm.DB, logging logging.Logging, validate *validator.Validate) *ImageController {
-	repository := &repository.ImageRepository{
-		Database: database,
-	}
+	repository := &repository.ImageRepository{Database: database}
 	return &ImageController{
 		Usecase: &usecases.ImagesUsecase{
 			ImageRepository: repository,
@@ -36,7 +34,7 @@ func NewImageController(database *gorm.DB, logging logging.Logging, validate *va
 
 // List はDBにある画像のデータを出力する
 // @Tags images Gorutine
-// Thermometer godoc
+// Image godoc
 // @Summary アップロードした画像を出力
 // @Description アップロードした画像のデータを順に出力する
 // @Accept  json
