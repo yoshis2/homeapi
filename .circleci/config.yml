@@ -1,16 +1,42 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.13
+      # より新しいGoのバージョンを使用します
+      - image: cimg/go:1.21
     working_directory: /go/src/homeapi
     steps:
       - checkout
-      - run: go get -u golang.org/x/tools/cmd/goimports
-      - run: go get -u golang.org/x/lint/golint
-      - run: go get -u github.com/kisielk/errcheck
-      - run: go get -u github.com/labstack/echo/v4
-      - run: go get -u github.com/swaggo/swag/cmd/swag
-      - run: swag init 
-      - run: go vet
-      - run: golint
+
+      # go.sum に基づいてキャッシュを復元します
+      - restore_cache:
+          keys:
+            - go-mod-v1-{{ checksum "go.sum" }}
+
+      # Go Modules を使って依存関係をインストールします
+      - run:
+          name: Install Dependencies
+          command: go mod tidy
+
+      # 依存関係をキャッシュに保存します
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+
+      # 静的解析ツールをインストールします
+      - run:
+          name: Install Tools
+          command: |
+            go install honnef.co/go/tools/cmd/staticcheck@latest
+            go install github.com/swaggo/swag/cmd/swag@latest
+
+      - run:
+          name: Generate Swagger Docs
+          command: swag init
+
+      - run:
+          name: Run Vet and Linter
+          command: |
+            go vet ./...
+            staticcheck ./...
