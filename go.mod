@@ -1,6 +1,8 @@
 module homeapi
 
-go 1.22.2
+go 1.23.0
+
+toolchain go1.23.11
 
 require (
 	cloud.google.com/go/firestore v1.15.0
@@ -14,7 +16,6 @@ require (
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-redis/redismock/v8 v8.11.5
-	github.com/golang/mock v1.1.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/pkg/errors v0.9.1
@@ -103,7 +104,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/net v0.24.0 // indirect
-	golang.org/x/oauth2 v0.19.0 // indirect
+	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
